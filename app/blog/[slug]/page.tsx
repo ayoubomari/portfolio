@@ -3,17 +3,20 @@ import Header from "@/components/layouts/Header";
 import Image from "next/image";
 import fs from "fs";
 import path from "path";
-import { Metadata, ResolvingMetadata } from "next";
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import BlogContent from "@/components/ui/BlogContent";
 import BlogPostCard from "@/components/wedges/BlogPostCard";
-import { fromFullStringDateTo_month_DD_YYYY } from "@/lib/converters/date";
+import { formatDateToSQL, fromFullStringDateTo_DD_month_YYYY } from "@/lib/converters/date";
 import { blogPost } from "@/db/schema";
 import { ApiResponse } from "@/types/api";
 import { db } from "@/db";
-import { and, eq, lte, not } from "drizzle-orm";
+import { and, desc, eq, lte, not } from "drizzle-orm";
+import { env } from "@/env";
+import { JsonLd } from 'react-schemaorg'
+import { NewsArticle } from 'schema-dts'
 
-export const revalidate = 10; // Revalidate every 10 seconds
+// export const revalidate = 10; // Revalidate every 10 seconds
 
 type BlogParams = {
   slug: string;
@@ -21,36 +24,53 @@ type BlogParams = {
 
 async function fetchBlogPostBySlugWithRelevantPosts(slug: string): Promise<
   ApiResponse<{
-    mainPost: typeof blogPost.$inferSelect;
+    mainPost: typeof blogPost.$inferSelect & { tags: string[] };
     relevantPosts: (typeof blogPost.$inferSelect)[];
   }>
 > {
   try {
-    // Fetch the main blog post based on the slug
-    const posts = await db
-      .select()
-      .from(blogPost)
-      .where(eq(blogPost.slug, slug));
+    // Fetch the main blog post with its tags
+    const mainPostWithTags = await db.query.blogPost.findFirst({
+      where: eq(blogPost.slug, slug),
+      with: {
+        tags: {
+          columns: {
+            id: false,
+          },
+          with: {
+            tag: {
+              columns: {
+                value: true,
+              },
+            },
+          },
+        },
+      },
+    });
 
-    if (!Array.isArray(posts) || posts.length === 0) {
+    if (!mainPostWithTags) {
       return { ok: false, error: "Blog post not found" };
     }
 
-    const mainPost = posts[0];
+    // Transform the tags to the desired format
+    const mainPost = {
+      ...mainPostWithTags,
+      tags: mainPostWithTags.tags.map(t => t.tag.value),
+    };
 
-    // Fetch relevant posts (only the ones before after the main post)
-    const relevantPosts = await db
-      .select()
-      .from(blogPost)
-      .where(
-        and(
-          not(eq(blogPost.slug, slug)),
-          lte(blogPost.createdAt, mainPost.createdAt),
-        ),
-      );
+    // Fetch relevant posts
+    const relevantPosts = await db.query.blogPost.findMany({
+      where: and(
+        not(eq(blogPost.slug, slug)),
+        lte(blogPost.date, mainPost.date)
+      ),
+      orderBy: [desc(blogPost.date)],
+      limit: 3,
+    });
 
     return { ok: true, data: { mainPost, relevantPosts } };
   } catch (error) {
+    console.error("Error fetching blog post:", error);
     return { ok: false, error: String(error) };
   }
 }
@@ -67,20 +87,25 @@ export async function generateMetadata({
     return notFound();
   }
   const blogPost = blogPostsResponse.data.mainPost;
+  const tags = blogPostsResponse.data.mainPost.tags;
+
+  const postUrl = `${env.NEXT_PUBLIC_SITE_URL}/blog/${blogPost.slug}`;
+  const imageUrl = blogPost.thumbnail
+    ? `${env.NEXT_PUBLIC_SITE_URL}/uploads/blog-posts-thumbnails/${blogPost.thumbnail}`
+    : `${env.NEXT_PUBLIC_SITE_URL}/assets/images/contents/thumbnail1.webp`;
 
   return {
     title: blogPost.title,
     description: blogPost.summary,
+    keywords: tags.map((tag) => tag),
     openGraph: {
       title: blogPost.title,
       description: blogPost.summary,
-      url: `${process.env.NEXT_PUBLIC_SITE_URL}/blog/${blogPost.slug}`,
+      url: postUrl,
       siteName: "Ayoub Omari Portfolio",
       images: [
         {
-          url:
-            `${process.env.NEXT_PUBLIC_SITE_URL}/uploads/blog-posts-thumbnails/${blogPost.thumbnail}` ||
-            `${process.env.NEXT_PUBLIC_SITE_URL}/assets/images/contents/thumbnail1.webp`,
+          url: imageUrl,
           width: 1200,
           height: 630,
           alt: blogPost.title,
@@ -95,11 +120,24 @@ export async function generateMetadata({
       card: "summary_large_image",
       title: blogPost.title,
       description: blogPost.summary,
-      images: [
-        blogPost.thumbnail || "https://yourdomain.com/default-og-image.jpg",
-      ],
+      images: [imageUrl],
     },
     authors: [{ name: blogPost.author }],
+    alternates: {
+      canonical: postUrl,
+    },
+    other: {
+      "news_keywords": tags.map((tag) => tag).join(", "),
+      "googlebot-news": "index,follow",
+    },
+    robots: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+    metadataBase: new URL(env.NEXT_PUBLIC_SITE_URL),
   };
 }
 
@@ -115,21 +153,9 @@ export default async function BlogPostPage({ params }: { params: BlogParams }) {
   const blogPost = blogPostsResponse.data.mainPost;
   const relevantPosts = blogPostsResponse.data.relevantPosts;
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    url: `${process.env.NEXT_PUBLIC_SITE_URL}/blog/${blogPost.slug}`,
-    title: blogPost.title,
-    thumbnail: blogPost.thumbnail ? `${process.env.NEXT_PUBLIC_SITE_URL}/uploads/blog-posts-thumbnails/${blogPost.thumbnail}` : `${process.env.NEXT_PUBLIC_SITE_URL}/assets/images/contents/thumbnail1.webp`,
-    datePublished: blogPost.createdAt.toISOString(),
-    authorName: blogPost.author,
-    description: blogPost.summary,
-    image: blogPost.thumbnail ? `${process.env.NEXT_PUBLIC_SITE_URL}/uploads/blog-posts-thumbnails/${blogPost.thumbnail}` : `${process.env.NEXT_PUBLIC_SITE_URL}/assets/images/contents/thumbnail1.webp`,
-  };
-
   const filePath = path.join(
     process.cwd(),
-    "public/uploads/posts",
+    "public/uploads/blog-posts-markdowns",
     `${blogPost.slug}.md`,
   );
   const fileContent = await fs.promises.readFile(filePath, "utf8");
@@ -137,14 +163,42 @@ export default async function BlogPostPage({ params }: { params: BlogParams }) {
   return (
     <>
       {/* JSON-LD */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} 
+      <JsonLd<NewsArticle>
+        item={{
+          "@context": "https://schema.org",
+          "@type": "NewsArticle",
+          headline: blogPost.title,
+          image: [
+            `${env.NEXT_PUBLIC_SITE_URL}/uploads/blog-posts-thumbnails/${blogPost.thumbnail}` ||
+            `${env.NEXT_PUBLIC_SITE_URL}/assets/images/contents/thumbnail1.webp`
+          ],
+          datePublished: blogPost.date.toISOString(),
+          dateModified: blogPost.date.toISOString(),
+          author: [{
+            "@type": "Person",
+            name: blogPost.author,
+            url: `${env.NEXT_PUBLIC_SITE_URL}`
+          }],
+          publisher: {
+            "@type": "Organization",
+            name: "Ayoub Omari Portfolio",
+            logo: {
+              "@type": "ImageObject",
+              url: `${env.NEXT_PUBLIC_SITE_URL}/assets/images/icons/logo.webp`,
+            }
+          },
+          description: blogPost.summary,
+          mainEntityOfPage: {
+            "@type": "WebPage",
+            "@id": `${env.NEXT_PUBLIC_SITE_URL}/blog/${blogPost.slug}`
+          }
+        }}
       />
 
       <Header />
       <main className="">
         <section className="container mx-auto flex flex-col items-center px-4 py-16">
+          {/* Blog post title */}
           <div className="relative w-full max-w-4xl grow overflow-hidden rounded-lg bg-primary p-8 shadow">
             <Image
               width={376}
@@ -167,7 +221,7 @@ export default async function BlogPostPage({ params }: { params: BlogParams }) {
                 </span>
                 <span className="text-lg font-bold">The Dig</span>
                 <span className="hidden font-medium sm:block">
-                  {fromFullStringDateTo_month_DD_YYYY(blogPost.date.toString())}
+                  {fromFullStringDateTo_DD_month_YYYY(blogPost.date.toString())}
                 </span>
               </div>
               <h1 className="py-6 text-2xl font-bold sm:py-8 sm:text-center md:py-12 md:text-3xl lg:text-4xl">
@@ -187,13 +241,13 @@ export default async function BlogPostPage({ params }: { params: BlogParams }) {
                   {blogPost.author}
                 </span>
                 <span className="block font-medium sm:hidden">
-                  {fromFullStringDateTo_month_DD_YYYY(blogPost.date.toString())}
+                  {fromFullStringDateTo_DD_month_YYYY(blogPost.date.toString())}
                 </span>
               </div>
             </div>
           </div>
 
-          {/* Blog Content */}
+          {/* Blog post Content */}
           <div className="mt-16 w-full max-w-4xl text-lg leading-7 md:text-xl md:leading-8">
             <BlogContent content={fileContent} />
           </div>
@@ -205,15 +259,8 @@ export default async function BlogPostPage({ params }: { params: BlogParams }) {
             )}
             <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
               {/* relevant blog posts  Cards */}
-              {relevantPosts.map((_, i) => (
-                <BlogPostCard
-                  key={i}
-                  title="Full Stack Frontiers: Web, Mobile, and Web3 Insights"
-                  summary="Subscribe for cutting-edge dev tips, project showcases, and blockchain innovations"
-                  date="2022-12-22"
-                  slug="full-stack-frontiers"
-                  thumbnail="/assets/images/contents/thumbnail1.webp"
-                />
+              {relevantPosts.map((post, i) => (
+                <BlogPostCard key={i} {...post} date={formatDateToSQL(post.date)} />
               ))}
             </div>
           </div>

@@ -34,7 +34,6 @@ const monthShortNames: string[] = [
 export const fromYYYY_MM_DD_to_DD_month_YYYY = (
   databaseFormat: string,
 ): [string, string] => {
-  console.log("databaseFormat:", databaseFormat);
   const splitDatabaseFormat = databaseFormat.split("-");
   if (splitDatabaseFormat.length != 3) {
     return ["the date format in invalide", ""];
@@ -66,10 +65,6 @@ export const fromYYYY_MM_DD_to_DD_month_YYYY = (
     return ["the date is incorrect", ""];
   }
 
-  console.log(
-    `${splitDatabaseFormat[2]} ${monthsNames[Number(splitDatabaseFormat[1]) - 1]}, ${splitDatabaseFormat[0]}`,
-  );
-
   return [
     "",
     `${splitDatabaseFormat[2]} ${monthsNames[Number(splitDatabaseFormat[1]) - 1]}, ${splitDatabaseFormat[0]}`,
@@ -86,10 +81,9 @@ export const formatDateToSQL = (date: Date): string => {
 
 // convert date from Mon DD YYYY 01:00:00 GMT+0100 (GMT+01:00) to DD Month, YYYY
 // useful in nextjs server actions and server side rendering
-export const fromFullStringDateTo_month_DD_YYYY = (
+export const fromFullStringDateTo_DD_month_YYYY = (
   fullStringFormat: string,
 ): [string, string] => {
-  console.log("fullStringFormat:", fullStringFormat);
   const splitedDate = fullStringFormat.split(" ");
   if (splitedDate.length != 7) {
     return ["the date format in invalide", ""];

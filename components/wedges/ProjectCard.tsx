@@ -5,12 +5,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 
 export default function ProjectCard({
-  thumbnail = "/assets/images/contents/thumbnail2.webp",
+  thumbnail,
   title,
   link,
   description,
 }: {
-  thumbnail?: string;
+  thumbnail?: string | null;
   title: string;
   link: string;
   description: string;
@@ -19,7 +19,7 @@ export default function ProjectCard({
     <Card className="border-0 bg-transparent shadow-none">
       <Link href={link}>
         <Image
-          src={thumbnail}
+          src={ thumbnail ? `/uploads/projects-thumbnails/${thumbnail}` : "/assets/images/contents/thumbnail2.webp"}
           width={400}
           height={400}
           className="w-full rounded-lg object-cover"

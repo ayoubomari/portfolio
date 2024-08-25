@@ -15,28 +15,28 @@ const colors: string[] = [
 ];
 
 export default function ProjectCard2({
-  thumbnail = "/assets/images/contents/thumbnail2.webp",
+  thumbnail,
   title,
-  link,
-  description,
+  slug,
+  summary,
   tags,
   githubLink,
   websiteLink,
 }: {
-  thumbnail?: string;
+  thumbnail?: string | null;
   title: string;
-  link: string;
-  description: string;
+  slug: string;
+  summary: string;
   tags: string[];
-  githubLink: string;
-  websiteLink: string;
+  githubLink: string | null;
+  websiteLink: string | null;
 }) {
   return (
     <Card className="relative rounded-xl">
-      <Link href={link}>
+      <Link href={`/projects/${slug}`}>
         <div className="rounded-xl px-5 pt-5">
           <Image
-            src={thumbnail}
+            src={ thumbnail ? `/uploads/projects-thumbnails/${thumbnail}` : "/assets/images/contents/thumbnail2.webp"}
             width={400}
             height={400}
             className="w-full rounded-xl object-cover"
@@ -64,13 +64,13 @@ export default function ProjectCard2({
           </Link>
         )}
       </div>
-      <Link href={link}>
+      <Link href={`/projects/${slug}`}>
         <CardHeader className="flex flex-col justify-between gap-1 px-5 py-5">
           <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">
             {title}
           </h2>
           <p className="text-sm text-gray-600 dark:text-gray-400">
-            {description}
+            {summary}
           </p>
           <div className="flex flex-wrap gap-1">
             {tags &&

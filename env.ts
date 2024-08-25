@@ -8,6 +8,7 @@ const envSchema = z.object({
   DATABASE_USERNAME: z.string(),
   DATABASE_PASSWORD: z.string(),
   DATABASE_NAME: z.string(),
+  SECRET_KEY: z.string(),
   NEXT_PUBLIC_SITE_URL: z.string(),
   NEXT_PUBLIC_API_URL: z.string(),
 });

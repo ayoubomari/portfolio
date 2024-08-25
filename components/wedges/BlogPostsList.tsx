@@ -6,13 +6,14 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/components/ui/use-toast";
 import { blogPost } from "@/db/schema";
 
-type BlogPostsAPIResponse = Omit<typeof blogPost.$inferSelect, "date"> & {
+type BlogPostsAPIResponse = typeof blogPost.$inferSelect & {
   date: string;
+  createdAt: string;
+  updatedAt: string;
 };
 
 const fetchBlogPosts = async (): Promise<BlogPostsAPIResponse[]> => {
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL!}/blog`);
-  console.log("response:", response);
   return response.json();
 };
 
@@ -51,7 +52,7 @@ export default function BlogPostList() {
                 </div>
               ))
             : // Render blog posts when data is available
-              blogPosts &&
+              Array.isArray(blogPosts) &&
               blogPosts.map((post, i) => (
                 <m.div
                   key={i}
@@ -61,7 +62,8 @@ export default function BlogPostList() {
                 >
                   <BlogPostCard {...post} />
                 </m.div>
-              ))}
+              ))
+          }
         </div>
       </section>
     </LazyMotion>

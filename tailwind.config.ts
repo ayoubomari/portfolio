@@ -88,6 +88,8 @@ const config = {
           radial-gradient(at bottom left, rgba(128, 0, 128, 0.2), transparent 30%),
           radial-gradient(at bottom right, rgba(255, 192, 203, 0.2), transparent 30%)
         `,
+        "project-hero-light": "linear-gradient(to top right, #ec4899, #8b5cf6, #6366f1)",
+        "project-hero-dark": "linear-gradient(to top right, #7e22ce, #dc2626, #f97316)",
       },
     },
   },

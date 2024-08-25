@@ -20,7 +20,7 @@ export default function BlogPostCard({
     <Card className="overflow-hidden border-primary">
       <Link href={`/blog/${slug}`}>
         <Image
-          src={thumbnail || "/assets/images/contents/thumbnail1.webp"}
+          src={ thumbnail ? `/uploads/blog-posts-thumbnails/${thumbnail}` : "/assets/images/contents/thumbnail1.webp"}
           width={400}
           height={237}
           className="w-full object-cover"

@@ -168,60 +168,60 @@ export default function Home() {
               {/* Project Cards */}
               {/* <ProjectCard
                 link="#"
-                thumbnail="/assets/images/contents/project1.webp"
+                thumbnail="project1.webp"
                 title="Saas Landing Page"
                 description="Website/Landing page"
               />
               <ProjectCard
                 link="#"
-                thumbnail="/assets/images/contents/project2.webp"
+                thumbnail="project2.webp"
                 title="Saas Landing Page"
                 description="Website/Landing page"
               />
               <ProjectCard
                 link="#"
-                thumbnail="/assets/images/contents/project3.webp"
+                thumbnail="project3.webp"
                 title="Saas Landing Page"
                 description="Website/Landing page"
               />
               <ProjectCard
                 link="#"
-                thumbnail="/assets/images/contents/project1.webp"
+                thumbnail="project1.webp"
                 title="Saas Landing Page"
                 description="Website/Landing page"
               /> */}
               <ProjectCard2
-                thumbnail="/assets/images/contents/project1.webp"
-                link="/projects/full-stack-frontiers"
+                thumbnail="project1.webp"
+                slug="full-stack-frontiers"
                 title="Car Rent"
-                description="Web-based platform that allows users to search, book, and manage car rentals from various providers."
+                summary="Web-based platform that allows users to search, book, and manage car rentals from various providers."
                 tags={["react", "mongoodb", "tailwind"]}
                 githubLink="https://www.github.com/ayoubomari"
                 websiteLink="https://www.google.com/"
               />
               <ProjectCard2
-                thumbnail="/assets/images/contents/project2.webp"
-                link="/projects/full-stack-frontiers"
+                thumbnail="project2.webp"
+                slug="full-stack-frontiers"
                 title="Car Rent"
-                description="Web-based platform that allows users to search, book, and manage car rentals from various providers."
+                summary="Web-based platform that allows users to search, book, and manage car rentals from various providers."
                 tags={["react", "mongoodb", "tailwind"]}
                 githubLink="https://www.github.com/ayoubomari"
                 websiteLink="https://www.google.com/"
               />
               <ProjectCard2
-                thumbnail="/assets/images/contents/project3.webp"
-                link="/projects/full-stack-frontiers"
+                thumbnail="project3.webp"
+                slug="full-stack-frontiers"
                 title="Car Rent"
-                description="Web-based platform that allows users to search, book, and manage car rentals from various providers."
+                summary="Web-based platform that allows users to search, book, and manage car rentals from various providers."
                 tags={["react", "mongoodb", "tailwind"]}
                 githubLink="https://www.github.com/ayoubomari"
                 websiteLink="https://www.google.com/"
               />
               <ProjectCard2
-                thumbnail="/assets/images/contents/project1.webp"
-                link="/projects/full-stack-frontiers"
+                thumbnail="project1.webp"
+                slug="full-stack-frontiers"
                 title="Car Rent"
-                description="Web-based platform that allows users to search, book, and manage car rentals from various providers."
+                summary="Web-based platform that allows users to search, book, and manage car rentals from various providers."
                 tags={["react", "mongoodb", "tailwind"]}
                 githubLink="https://www.github.com/ayoubomari"
                 websiteLink="https://www.google.com/"

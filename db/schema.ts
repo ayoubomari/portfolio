@@ -8,13 +8,13 @@ import {
   date,
   boolean,
 } from "drizzle-orm/mysql-core";
-import { relations } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 
 export const admin = mysqlTable("admin", {
   id: int("id").primaryKey().autoincrement().notNull(),
-  firstName: varchar("firstName", { length: 255 }).notNull(),
-  lastName: varchar("lastName", { length: 255 }).notNull(),
-  phoneNumber: varchar("phoneNumber", { length: 20 }).notNull(),
+  firstName: varchar("first_name", { length: 255 }).notNull(),
+  lastName: varchar("last_name", { length: 255 }).notNull(),
+  phoneNumber: varchar("phone_number", { length: 20 }).notNull(),
   email: varchar("email", { length: 255 }).notNull(),
   password: varchar("password", { length: 255 }).notNull(),
   avatar: varchar("avatar", { length: 255 }).notNull(),
@@ -23,7 +23,8 @@ export const admin = mysqlTable("admin", {
 export const newsLetterFormEntries = mysqlTable("news_letter_form_entries", {
   id: int("id").primaryKey().autoincrement().notNull(),
   email: varchar("email", { length: 255 }).notNull(),
-  createdAt: datetime("createdAt").notNull(),
+  createdAt: datetime("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
+  updatedAt: datetime("updated_at").notNull().default(sql`CURRENT_TIMESTAMP`),
 });
 
 export const contactFormEntries = mysqlTable("contact_form_entries", {
@@ -33,7 +34,9 @@ export const contactFormEntries = mysqlTable("contact_form_entries", {
   phone: varchar("phone", { length: 20 }).notNull(),
   subject: varchar("subject", { length: 255 }).notNull(),
   message: text("message").notNull(),
-  createdAt: datetime("createdAt").notNull(),
+  isFeatured: boolean("is_featured").notNull(),
+  createdAt: datetime("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
+  updatedAt: datetime("updated_at").notNull().default(sql`CURRENT_TIMESTAMP`),
 });
 
 export const blogPost = mysqlTable("blog_post", {
@@ -45,7 +48,19 @@ export const blogPost = mysqlTable("blog_post", {
   status: mysqlEnum("status", ["visible", "invisible"]).notNull(),
   author: varchar("author", { length: 255 }).notNull(),
   date: date("date").notNull(),
-  createdAt: datetime("createdAt").notNull(),
+  createdAt: datetime("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
+  updatedAt: datetime("updated_at").notNull().default(sql`CURRENT_TIMESTAMP`),
+});
+
+export const blogPostImage = mysqlTable("blog_post_image", {
+  id: int("id").primaryKey().autoincrement().notNull(),
+  src: varchar("src", { length: 255 }).notNull(),
+  alt: varchar("alt", { length: 255 }).notNull(),
+  createdAt: datetime("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
+  updatedAt: datetime("updated_at").notNull().default(sql`CURRENT_TIMESTAMP`),
+  blogPostId: int("blog_post_id")
+    .notNull()
+    .references(() => blogPost.id, { onDelete: "cascade" }),
 });
 
 export const tag = mysqlTable("tag", {
@@ -63,21 +78,21 @@ export const blogPostTag = mysqlTable("blog_post_tag", {
     .references(() => tag.id),
 });
 
-export const technologie = mysqlTable("technologie", {
+export const technology = mysqlTable("technology", {
   id: int("id").primaryKey().autoincrement().notNull(),
   name: varchar("name", { length: 255 }).notNull(),
   icon: varchar("icon", { length: 255 }),
   link: varchar("link", { length: 255 }),
 });
 
-export const blogPostTechnologie = mysqlTable("blog_post_technologie", {
+export const blogPostTechnology = mysqlTable("blog_post_technology", {
   id: int("id").primaryKey().autoincrement().notNull(),
   blogPostId: int("blog_post_id")
     .notNull()
     .references(() => blogPost.id),
-  technologieId: int("technologie_id")
+  technologyId: int("technology_id")
     .notNull()
-    .references(() => technologie.id),
+    .references(() => technology.id),
 });
 
 export const project = mysqlTable("project", {
@@ -85,14 +100,26 @@ export const project = mysqlTable("project", {
   title: varchar("title", { length: 255 }).notNull(),
   slug: varchar("slug", { length: 255 }).notNull().unique(),
   thumbnail: varchar("thumbnail", { length: 255 }),
-  startDate: date("startDate"),
-  endDate: date("endDate"),
+  startDate: date("start_date"),
+  endDate: date("end_date"),
   summary: varchar("summary", { length: 255 }).notNull(),
-  githubLink: varchar("githubLink", { length: 255 }),
-  websiteLink: varchar("websiteLink", { length: 255 }),
+  githubLink: varchar("github_link", { length: 255 }),
+  websiteLink: varchar("website_link", { length: 255 }),
   status: mysqlEnum("status", ["visible", "invisible"]).notNull(),
-  isFeatured: boolean("isFeatured").notNull(),
-  createdAt: datetime("createdAt").notNull(),
+  isFeatured: boolean("is_featured").notNull(),
+  createdAt: datetime("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
+  updatedAt: datetime("updated_at").notNull().default(sql`CURRENT_TIMESTAMP`),
+});
+
+export const projectImage = mysqlTable("project_image", {
+  id: int("id").primaryKey().autoincrement().notNull(),
+  src: varchar("src", { length: 255 }).notNull(),
+  alt: varchar("alt", { length: 255 }).notNull(),
+  createdAt: datetime("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
+  updatedAt: datetime("updated_at").notNull().default(sql`CURRENT_TIMESTAMP`),
+  projectId: int("project_id")
+    .notNull()
+    .references(() => project.id, { onDelete: "cascade" }),
 });
 
 export const projectTag = mysqlTable("project_tag", {
@@ -105,20 +132,28 @@ export const projectTag = mysqlTable("project_tag", {
     .references(() => tag.id),
 });
 
-export const projectTechnologie = mysqlTable("project_technologie", {
+export const projectTechnology = mysqlTable("project_technology", {
   id: int("id").primaryKey().autoincrement().notNull(),
   projectId: int("project_id")
     .notNull()
     .references(() => project.id),
-  technologieId: int("technologie_id")
+  technologyId: int("technology_id")
     .notNull()
-    .references(() => technologie.id),
+    .references(() => technology.id),
 });
 
 // Relations
 export const blogPostRelations = relations(blogPost, ({ many }) => ({
   tags: many(blogPostTag),
-  technologies: many(blogPostTechnologie),
+  technologies: many(blogPostTechnology),
+  images: many(blogPostImage),
+}));
+
+export const blogPostImageRelations = relations(blogPostImage, ({ one }) => ({
+  blogPost: one(blogPost, {
+    fields: [blogPostImage.blogPostId],
+    references: [blogPost.id],
+  }),
 }));
 
 export const tagRelations = relations(tag, ({ many }) => ({
@@ -126,14 +161,22 @@ export const tagRelations = relations(tag, ({ many }) => ({
   projects: many(projectTag),
 }));
 
-export const technologieRelations = relations(technologie, ({ many }) => ({
-  blogPosts: many(blogPostTechnologie),
-  projects: many(projectTechnologie),
+export const technologyRelations = relations(technology, ({ many }) => ({
+  blogPosts: many(blogPostTechnology),
+  projects: many(projectTechnology),
 }));
 
 export const projectRelations = relations(project, ({ many }) => ({
   tags: many(projectTag),
-  technologies: many(projectTechnologie),
+  technologies: many(projectTechnology),
+  images: many(projectImage),
+}));
+
+export const projectImageRelations = relations(projectImage, ({ one }) => ({
+  project: one(project, {
+    fields: [projectImage.projectId],
+    references: [project.id],
+  }),
 }));
 
 export const blogPostTagRelations = relations(blogPostTag, ({ one }) => ({
@@ -147,16 +190,16 @@ export const blogPostTagRelations = relations(blogPostTag, ({ one }) => ({
   }),
 }));
 
-export const blogPostTechnologieRelations = relations(
-  blogPostTechnologie,
+export const blogPostTechnologyRelations = relations(
+  blogPostTechnology,
   ({ one }) => ({
     blogPost: one(blogPost, {
-      fields: [blogPostTechnologie.blogPostId],
+      fields: [blogPostTechnology.blogPostId],
       references: [blogPost.id],
     }),
-    technologie: one(technologie, {
-      fields: [blogPostTechnologie.technologieId],
-      references: [technologie.id],
+    technology: one(technology, {
+      fields: [blogPostTechnology.technologyId],
+      references: [technology.id],
     }),
   }),
 );
@@ -172,16 +215,16 @@ export const projectTagRelations = relations(projectTag, ({ one }) => ({
   }),
 }));
 
-export const projectTechnologieRelations = relations(
-  projectTechnologie,
+export const projectTechnologyRelations = relations(
+  projectTechnology,
   ({ one }) => ({
     project: one(project, {
-      fields: [projectTechnologie.projectId],
+      fields: [projectTechnology.projectId],
       references: [project.id],
     }),
-    technologie: one(technologie, {
-      fields: [projectTechnologie.technologieId],
-      references: [technologie.id],
+    technology: one(technology, {
+      fields: [projectTechnology.technologyId],
+      references: [technology.id],
     }),
   }),
 );
