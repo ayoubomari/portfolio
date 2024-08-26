@@ -6,7 +6,7 @@ import { env } from "@/env";
 import { encodeIdWithSecret } from "@/lib/crypto/dataEncoding";
 
 type ProjectsAPIResponse = typeof project.$inferSelect & {
-  tags: string[];
+  technologies: string[];
 };
 
 export async function GET() {
@@ -15,14 +15,14 @@ export async function GET() {
       where: eq(project.status, "visible"),
       orderBy: [desc(project.endDate)],
       with: {
-        tags: {
+        technologies: {
           columns: {
             id: false,
           },
           with: {
-            tag: {
+            technology: {
               columns: {
-                value: true,
+                name: true,
               },
             },
           },
@@ -33,7 +33,7 @@ export async function GET() {
     const projectResponse: ProjectsAPIResponse[] = projects.map((project) => ({
       ...project,
       id: encodeIdWithSecret(project.id, env.SECRET_KEY),
-      tags: project.tags.map((tag) => tag.tag.value),
+      technologies: project.technologies.map((technology) => technology.technology.name),
     }));
 
     return NextResponse.json(projectResponse);

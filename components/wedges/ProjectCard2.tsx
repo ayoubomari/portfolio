@@ -19,7 +19,7 @@ export default function ProjectCard2({
   title,
   slug,
   summary,
-  tags,
+  technologies,
   githubLink,
   websiteLink,
 }: {
@@ -27,7 +27,7 @@ export default function ProjectCard2({
   title: string;
   slug: string;
   summary: string;
-  tags: string[];
+  technologies: string[];
   githubLink: string | null;
   websiteLink: string | null;
 }) {
@@ -73,10 +73,10 @@ export default function ProjectCard2({
             {summary}
           </p>
           <div className="flex flex-wrap gap-1">
-            {tags &&
-              tags.map((tag, i) => (
+            {technologies &&
+              technologies.map((technology, i) => (
                 <span key={i} style={{ color: colors[i % colors.length] }}>
-                  #{tag}
+                  #{technology}
                 </span>
               ))}
           </div>

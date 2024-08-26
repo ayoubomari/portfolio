@@ -12,7 +12,7 @@ type ProjectsAPIResponse = typeof project.$inferSelect & {
   createdAt: string;
   updatedAt: string;
   
-  tags: string[];
+  technologies: string[];
 };
 
 

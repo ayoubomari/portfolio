@@ -40,7 +40,7 @@ export default function TechnologiesList({ technologies }: { technologies: (type
                                     aria-label={technology.name}
                                 >
                                     <Image
-                                        src={technology.icon ? `/uploads/technologies-icons/${technology.icon}` : "/assets/images/contents/thumbnail2.webp"}
+                                        src={technology.icon ? `/uploads/technologies-icons/${technology.icon}` : "/assets/images/contents/technology.webp"}
                                         alt={`${technology.name} icon`}
                                         width={72}
                                         height={72}

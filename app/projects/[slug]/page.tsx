@@ -5,7 +5,7 @@ import path from "path";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import BlogContent from "@/components/ui/BlogContent";
-import ProjectCard from "@/components/wedges/ProjectCard2";
+import ProjectCard2 from "@/components/wedges/ProjectCard2";
 import { project, technology } from "@/db/schema";
 import { ApiResponse } from "@/types/api";
 import { db } from "@/db";
@@ -32,7 +32,7 @@ async function fetchProjectBySlugWithRelevantProjects(slug: string): Promise<
     mainProject: typeof project.$inferSelect & { tags: string[] } & {
       technologies: (typeof technology.$inferSelect)[];
     };
-    relevantProjects: (typeof project.$inferSelect & { tags: string[] })[];
+    relevantProjects: (typeof project.$inferSelect & { technologies: string[] })[];
   }>
 > {
   try {
@@ -83,8 +83,8 @@ async function fetchProjectBySlugWithRelevantProjects(slug: string): Promise<
       })),
     };
 
-    // Fetch relevant projects with their tags
-    const relevantProjectsWithTags = await db.query.project.findMany({
+    // Fetch relevant projects with their technologies
+    const relevantProjectsWithTechnologies = await db.query.project.findMany({
       where: and(
         not(eq(project.slug, slug)),
         lte(project.createdAt, mainProject.createdAt)
@@ -92,14 +92,14 @@ async function fetchProjectBySlugWithRelevantProjects(slug: string): Promise<
       orderBy: [desc(project.endDate)],
       limit: 3,
       with: {
-        tags: {
+        technologies: {
           columns: {
             id: false,
           },
           with: {
-            tag: {
+            technology: {
               columns: {
-                value: true,
+                name: true,
               },
             },
           },
@@ -107,10 +107,10 @@ async function fetchProjectBySlugWithRelevantProjects(slug: string): Promise<
       },
     });
 
-    // Transform the tags for relevant projects
-    const relevantProjects = relevantProjectsWithTags.map(project => ({
+    // Transform the technologies for relevant projects names
+    const relevantProjects = relevantProjectsWithTechnologies.map(project => ({
       ...project,
-      tags: project.tags.map(t => t.tag.value),
+      technologies: project.technologies.map(t => t.technology.name),
     }));
 
     return { ok: true, data: { mainProject, relevantProjects } };
@@ -310,7 +310,7 @@ export default async function ProjectPage({ params }: { params: ProjectParams })
             <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
               {/* relevant projects  Cards */}
               {relevantProjects.map((post, i) => (
-                <ProjectCard key={i} {...post}  />
+                <ProjectCard2 key={i} {...post}  />
               ))}
             </div>
           </div>
