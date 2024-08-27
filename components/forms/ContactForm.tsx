@@ -3,17 +3,30 @@ import { useState, ChangeEvent, FormEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { z } from "zod";
 
-type FormErrors = {
-  name?: string;
-  phoneNumber?: string;
-  email?: string;
-  subject?: string;
-  message?: string;
-};
+const ContactFormSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  phoneNumber: z
+    .string()
+    .optional()
+    .refine(
+      (val) => !val || /^\+?(\d{1,4})?\s?(\d{6,14})$/.test(val),
+      "Invalid phone number format"
+    ),
+  email: z
+    .string()
+    .min(1, "Email is required")
+    .email("Email is invalid"),
+  subject: z.string().min(1, "Subject is required"),
+  message: z.string().min(1, "Message is required"),
+});
+
+type FormData = z.infer<typeof ContactFormSchema>;
+type FormErrors = Partial<Record<keyof FormData, string>>;
 
 export default function ContactForm() {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     name: "",
     phoneNumber: "",
     email: "",
@@ -21,16 +34,10 @@ export default function ContactForm() {
     message: "",
   });
 
-  const [formErrors, setFormErrors] = useState<FormErrors>({
-    name: "",
-    phoneNumber: "",
-    email: "",
-    subject: "",
-    message: "",
-  });
+  const [formErrors, setFormErrors] = useState<FormErrors>({});
 
   const handleContactInputChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({
@@ -40,43 +47,24 @@ export default function ContactForm() {
   };
 
   const validateForm = () => {
-    let errors: FormErrors = {};
-    let isValid: boolean = true;
+    const result = ContactFormSchema.safeParse(formData);
 
-    if (!formData.name.trim()) {
-      errors.name = "Name is required";
-      isValid = false;
+    if (!result.success) {
+      const errors: FormErrors = {};
+      result.error.errors.forEach((error) => {
+        if (error.path.length > 0) {
+          const key = error.path[0] as keyof FormData;
+          errors[key] = error.message;
+        }
+      });
+      setFormErrors(errors);
+      return false;
     }
 
-    if (!formData.email.trim()) {
-      errors.email = "Email is required";
-      isValid = false;
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      errors.email = "Email is invalid";
-      isValid = false;
-    }
-
-    if (!formData.subject.trim()) {
-      errors.subject = "Subject is required";
-      isValid = false;
-    }
-
-    if (formData.phoneNumber) {
-      const phoneRegex = /^\+?(\d{1,4})?\s?(\d{6,14})$/;
-      if (!phoneRegex.test(formData.phoneNumber)) {
-        errors.phoneNumber = "Invalid phone number format";
-        isValid = false;
-      }
-    }
-
-    if (!formData.message.trim()) {
-      errors.message = "Message is required";
-      isValid = false;
-    }
-
-    setFormErrors(errors);
-    return isValid;
+    setFormErrors({});
+    return true;
   };
+
   const handleContactSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -91,7 +79,6 @@ export default function ContactForm() {
         subject: "",
         message: "",
       });
-      setFormErrors({});
     }
   };
 
@@ -176,7 +163,9 @@ export default function ContactForm() {
           placeholder="Enter Your Phone"
         />
         {formErrors.phoneNumber && (
-          <p className="mt-1 text-sm text-red-500">{formErrors.phoneNumber}</p>
+          <p className="mt-1 text-sm text-red-500">
+            {formErrors.phoneNumber}
+          </p>
         )}
       </div>
       <div className="col-span-1 mb-4 sm:col-span-2">
