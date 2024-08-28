@@ -20,8 +20,7 @@ import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons";
 import Image from "next/image";
 import Header from "@/components/layouts/Header";
 import Footer from "@/components/layouts/Footer";
-import Tag from "@/components/ui/Tags";
-import ProjectCard from "@/components/wedges/ProjectCard";
+import Tag from "@/components/ui/Tag";
 import ProjectCard2 from "@/components/wedges/ProjectCard2";
 library.add(faPhone, faEnvelope, faGithub, faLinkedin, faUpRightFromSquare);
 
@@ -195,7 +194,7 @@ export default function Home() {
                 slug="full-stack-frontiers"
                 title="Car Rent"
                 summary="Web-based platform that allows users to search, book, and manage car rentals from various providers."
-                tags={["react", "mongoodb", "tailwind"]}
+                technologies={["react", "mongoodb", "tailwind"]}
                 githubLink="https://www.github.com/ayoubomari"
                 websiteLink="https://www.google.com/"
               />
@@ -204,7 +203,7 @@ export default function Home() {
                 slug="full-stack-frontiers"
                 title="Car Rent"
                 summary="Web-based platform that allows users to search, book, and manage car rentals from various providers."
-                tags={["react", "mongoodb", "tailwind"]}
+                technologies={["react", "mongoodb", "tailwind"]}
                 githubLink="https://www.github.com/ayoubomari"
                 websiteLink="https://www.google.com/"
               />
@@ -213,7 +212,7 @@ export default function Home() {
                 slug="full-stack-frontiers"
                 title="Car Rent"
                 summary="Web-based platform that allows users to search, book, and manage car rentals from various providers."
-                tags={["react", "mongoodb", "tailwind"]}
+                technologies={["react", "mongoodb", "tailwind"]}
                 githubLink="https://www.github.com/ayoubomari"
                 websiteLink="https://www.google.com/"
               />
@@ -222,7 +221,7 @@ export default function Home() {
                 slug="full-stack-frontiers"
                 title="Car Rent"
                 summary="Web-based platform that allows users to search, book, and manage car rentals from various providers."
-                tags={["react", "mongoodb", "tailwind"]}
+                technologies={["react", "mongoodb", "tailwind"]}
                 githubLink="https://www.github.com/ayoubomari"
                 websiteLink="https://www.google.com/"
               />
