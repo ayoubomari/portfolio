@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "fd52a860-3f8e-447b-91be-8839a710b1bc",
+  "id": "9f202dee-26f5-4019-900b-466b0508729a",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "admin": {
@@ -9,28 +9,35 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "int",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": true
-        },
-        "firstName": {
-          "name": "firstName",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
-        "lastName": {
-          "name": "lastName",
+        "first_name": {
+          "name": "first_name",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
-        "phoneNumber": {
-          "name": "phoneNumber",
+        "last_name": {
+          "name": "last_name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "phone_number": {
+          "name": "phone_number",
           "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "user_name": {
+          "name": "user_name",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
@@ -42,8 +49,8 @@
           "notNull": true,
           "autoincrement": false
         },
-        "password": {
-          "name": "password",
+        "password_hash": {
+          "name": "password_hash",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true,
@@ -67,7 +74,14 @@
           ]
         }
       },
-      "uniqueConstraints": {}
+      "uniqueConstraints": {
+        "admin_user_name_unique": {
+          "name": "admin_user_name_unique",
+          "columns": [
+            "user_name"
+          ]
+        }
+      }
     },
     "blog_post": {
       "name": "blog_post",
@@ -128,12 +142,21 @@
           "notNull": true,
           "autoincrement": false
         },
-        "createdAt": {
-          "name": "createdAt",
+        "created_at": {
+          "name": "created_at",
           "type": "datetime",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false
+          "autoincrement": false,
+          "default": "CURRENT_TIMESTAMP"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "CURRENT_TIMESTAMP"
         }
       },
       "indexes": {},
@@ -154,6 +177,80 @@
           ]
         }
       }
+    },
+    "blog_post_image": {
+      "name": "blog_post_image",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "src": {
+          "name": "src",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "alt": {
+          "name": "alt",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "CURRENT_TIMESTAMP"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "CURRENT_TIMESTAMP"
+        },
+        "blog_post_id": {
+          "name": "blog_post_id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "blog_post_image_blog_post_id_blog_post_id_fk": {
+          "name": "blog_post_image_blog_post_id_blog_post_id_fk",
+          "tableFrom": "blog_post_image",
+          "tableTo": "blog_post",
+          "columnsFrom": [
+            "blog_post_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "blog_post_image_id": {
+          "name": "blog_post_image_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
     },
     "blog_post_tag": {
       "name": "blog_post_tag",
@@ -219,8 +316,8 @@
       },
       "uniqueConstraints": {}
     },
-    "blog_post_technologie": {
-      "name": "blog_post_technologie",
+    "blog_post_technology": {
+      "name": "blog_post_technology",
       "columns": {
         "id": {
           "name": "id",
@@ -236,8 +333,8 @@
           "notNull": true,
           "autoincrement": false
         },
-        "technologie_id": {
-          "name": "technologie_id",
+        "technology_id": {
+          "name": "technology_id",
           "type": "int",
           "primaryKey": false,
           "notNull": true,
@@ -246,9 +343,9 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "blog_post_technologie_blog_post_id_blog_post_id_fk": {
-          "name": "blog_post_technologie_blog_post_id_blog_post_id_fk",
-          "tableFrom": "blog_post_technologie",
+        "blog_post_technology_blog_post_id_blog_post_id_fk": {
+          "name": "blog_post_technology_blog_post_id_blog_post_id_fk",
+          "tableFrom": "blog_post_technology",
           "tableTo": "blog_post",
           "columnsFrom": [
             "blog_post_id"
@@ -259,12 +356,12 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "blog_post_technologie_technologie_id_technologie_id_fk": {
-          "name": "blog_post_technologie_technologie_id_technologie_id_fk",
-          "tableFrom": "blog_post_technologie",
-          "tableTo": "technologie",
+        "blog_post_technology_technology_id_technology_id_fk": {
+          "name": "blog_post_technology_technology_id_technology_id_fk",
+          "tableFrom": "blog_post_technology",
+          "tableTo": "technology",
           "columnsFrom": [
-            "technologie_id"
+            "technology_id"
           ],
           "columnsTo": [
             "id"
@@ -274,8 +371,8 @@
         }
       },
       "compositePrimaryKeys": {
-        "blog_post_technologie_id": {
-          "name": "blog_post_technologie_id",
+        "blog_post_technology_id": {
+          "name": "blog_post_technology_id",
           "columns": [
             "id"
           ]
@@ -328,12 +425,28 @@
           "notNull": true,
           "autoincrement": false
         },
-        "createdAt": {
-          "name": "createdAt",
-          "type": "datetime",
+        "is_featured": {
+          "name": "is_featured",
+          "type": "boolean",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "CURRENT_TIMESTAMP"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "CURRENT_TIMESTAMP"
         }
       },
       "indexes": {},
@@ -365,12 +478,21 @@
           "notNull": true,
           "autoincrement": false
         },
-        "createdAt": {
-          "name": "createdAt",
+        "created_at": {
+          "name": "created_at",
           "type": "datetime",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false
+          "autoincrement": false,
+          "default": "CURRENT_TIMESTAMP"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "CURRENT_TIMESTAMP"
         }
       },
       "indexes": {},
@@ -416,15 +538,15 @@
           "notNull": false,
           "autoincrement": false
         },
-        "startDate": {
-          "name": "startDate",
+        "start_date": {
+          "name": "start_date",
           "type": "date",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
         },
-        "endDate": {
-          "name": "endDate",
+        "end_date": {
+          "name": "end_date",
           "type": "date",
           "primaryKey": false,
           "notNull": false,
@@ -437,15 +559,15 @@
           "notNull": true,
           "autoincrement": false
         },
-        "githubLink": {
-          "name": "githubLink",
+        "github_link": {
+          "name": "github_link",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
         },
-        "websiteLink": {
-          "name": "websiteLink",
+        "website_link": {
+          "name": "website_link",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false,
@@ -458,19 +580,28 @@
           "notNull": true,
           "autoincrement": false
         },
-        "isFeatured": {
-          "name": "isFeatured",
+        "is_featured": {
+          "name": "is_featured",
           "type": "boolean",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
-        "createdAt": {
-          "name": "createdAt",
+        "created_at": {
+          "name": "created_at",
           "type": "datetime",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false
+          "autoincrement": false,
+          "default": "CURRENT_TIMESTAMP"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "CURRENT_TIMESTAMP"
         }
       },
       "indexes": {},
@@ -491,6 +622,80 @@
           ]
         }
       }
+    },
+    "project_image": {
+      "name": "project_image",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "src": {
+          "name": "src",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "alt": {
+          "name": "alt",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "CURRENT_TIMESTAMP"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "CURRENT_TIMESTAMP"
+        },
+        "project_id": {
+          "name": "project_id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "project_image_project_id_project_id_fk": {
+          "name": "project_image_project_id_project_id_fk",
+          "tableFrom": "project_image",
+          "tableTo": "project",
+          "columnsFrom": [
+            "project_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "project_image_id": {
+          "name": "project_image_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
     },
     "project_tag": {
       "name": "project_tag",
@@ -556,8 +761,8 @@
       },
       "uniqueConstraints": {}
     },
-    "project_technologie": {
-      "name": "project_technologie",
+    "project_technology": {
+      "name": "project_technology",
       "columns": {
         "id": {
           "name": "id",
@@ -573,8 +778,8 @@
           "notNull": true,
           "autoincrement": false
         },
-        "technologie_id": {
-          "name": "technologie_id",
+        "technology_id": {
+          "name": "technology_id",
           "type": "int",
           "primaryKey": false,
           "notNull": true,
@@ -583,9 +788,9 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "project_technologie_project_id_project_id_fk": {
-          "name": "project_technologie_project_id_project_id_fk",
-          "tableFrom": "project_technologie",
+        "project_technology_project_id_project_id_fk": {
+          "name": "project_technology_project_id_project_id_fk",
+          "tableFrom": "project_technology",
           "tableTo": "project",
           "columnsFrom": [
             "project_id"
@@ -596,12 +801,12 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "project_technologie_technologie_id_technologie_id_fk": {
-          "name": "project_technologie_technologie_id_technologie_id_fk",
-          "tableFrom": "project_technologie",
-          "tableTo": "technologie",
+        "project_technology_technology_id_technology_id_fk": {
+          "name": "project_technology_technology_id_technology_id_fk",
+          "tableFrom": "project_technology",
+          "tableTo": "technology",
           "columnsFrom": [
-            "technologie_id"
+            "technology_id"
           ],
           "columnsTo": [
             "id"
@@ -611,8 +816,59 @@
         }
       },
       "compositePrimaryKeys": {
-        "project_technologie_id": {
-          "name": "project_technologie_id",
+        "project_technology_id": {
+          "name": "project_technology_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "session": {
+      "name": "session",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "expires_at": {
+          "name": "expires_at",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "session_user_id_admin_id_fk": {
+          "name": "session_user_id_admin_id_fk",
+          "tableFrom": "session",
+          "tableTo": "admin",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "session_id": {
+          "name": "session_id",
           "columns": [
             "id"
           ]
@@ -650,8 +906,8 @@
       },
       "uniqueConstraints": {}
     },
-    "technologie": {
-      "name": "technologie",
+    "technology": {
+      "name": "technology",
       "columns": {
         "id": {
           "name": "id",
@@ -685,8 +941,8 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {
-        "technologie_id": {
-          "name": "technologie_id",
+        "technology_id": {
+          "name": "technology_id",
           "columns": [
             "id"
           ]

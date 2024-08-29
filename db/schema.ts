@@ -11,14 +11,31 @@ import {
 import { relations, sql } from "drizzle-orm";
 
 export const admin = mysqlTable("admin", {
-  id: int("id").primaryKey().autoincrement().notNull(),
+  id: varchar("id", {
+		length: 255
+	}).primaryKey(),
   firstName: varchar("first_name", { length: 255 }).notNull(),
   lastName: varchar("last_name", { length: 255 }).notNull(),
   phoneNumber: varchar("phone_number", { length: 20 }).notNull(),
+  username: varchar("user_name", { length: 255 }).notNull().unique(),
   email: varchar("email", { length: 255 }).notNull(),
-  password: varchar("password", { length: 255 }).notNull(),
+  passwordHash: varchar("password_hash", { length: 255 }).notNull(),
   avatar: varchar("avatar", { length: 255 }).notNull(),
 });
+
+export const sessionTable = mysqlTable("session", {
+	id: varchar("id", {
+		length: 255
+	}).primaryKey(),
+	userId: varchar("user_id", {
+		length: 255
+	})
+		.notNull()
+		.references(() => admin.id),
+	expiresAt: datetime("expires_at").notNull()
+});
+
+
 
 export const newsLetterFormEntries = mysqlTable("news_letter_form_entries", {
   id: int("id").primaryKey().autoincrement().notNull(),
@@ -34,7 +51,6 @@ export const contactFormEntries = mysqlTable("contact_form_entries", {
   phone: varchar("phone", { length: 20 }).notNull(),
   subject: varchar("subject", { length: 255 }).notNull(),
   message: text("message").notNull(),
-  isFeatured: boolean("is_featured").notNull(),
   createdAt: datetime("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
   updatedAt: datetime("updated_at").notNull().default(sql`CURRENT_TIMESTAMP`),
 });

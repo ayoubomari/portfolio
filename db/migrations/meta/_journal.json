@@ -5,22 +5,15 @@
     {
       "idx": 0,
       "version": "5",
-      "when": 1724515081797,
-      "tag": "0000_nasty_spot",
+      "when": 1724864917136,
+      "tag": "0000_broken_warbound",
       "breakpoints": true
     },
     {
       "idx": 1,
       "version": "5",
-      "when": 1724526164701,
-      "tag": "0001_rare_scalphunter",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1724529980713,
-      "tag": "0002_fluffy_flatman",
+      "when": 1724942247422,
+      "tag": "0001_bent_elektra",
       "breakpoints": true
     }
   ]
