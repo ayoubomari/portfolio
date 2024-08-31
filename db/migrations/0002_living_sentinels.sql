@@ -1,0 +1,1 @@
+ALTER TABLE `contact_form_entries` RENAME COLUMN `phone` TO `phone_number`;

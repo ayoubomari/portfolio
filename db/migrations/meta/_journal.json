@@ -15,6 +15,13 @@
       "when": 1724942247422,
       "tag": "0001_bent_elektra",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1725026080619,
+      "tag": "0002_living_sentinels",
+      "breakpoints": true
     }
   ]
 }

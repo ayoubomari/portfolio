@@ -45,7 +45,7 @@ export default function Page() {
 				</div>
 			</div>
 			<div className="hidden md:block relative w-1/2">
-				<Image src="/assets/images/contents/login-background.webp" alt="login" layout="fill" className="object-cover" />
+				<Image src="/assets/images/contents/login-background.webp" alt="login" fill sizes="(100vw, 100vh)" className="object-cover" />
 			</div>
 		</div>
 		<Footer />

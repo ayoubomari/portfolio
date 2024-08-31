@@ -48,7 +48,7 @@ export const contactFormEntries = mysqlTable("contact_form_entries", {
   id: int("id").primaryKey().autoincrement().notNull(),
   name: varchar("name", { length: 255 }).notNull(),
   email: varchar("email", { length: 255 }).notNull(),
-  phone: varchar("phone", { length: 20 }).notNull(),
+  phoneNumber: varchar("phone_number", { length: 20 }),
   subject: varchar("subject", { length: 255 }).notNull(),
   message: text("message").notNull(),
   createdAt: datetime("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),

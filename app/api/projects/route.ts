@@ -9,7 +9,7 @@ type ProjectsAPIResponse = typeof project.$inferSelect & {
   technologies: string[];
 };
 
-export async function GET() {
+export async function GET(): Promise<Response>  {
   try {
     const projects = await db.query.project.findMany({
       where: eq(project.status, "visible"),

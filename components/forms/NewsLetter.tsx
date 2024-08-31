@@ -3,7 +3,10 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState, ChangeEvent, FormEvent } from "react";
+import { useToast } from "@/components/ui/use-toast";
 import { z } from "zod";
+import { useMutation } from "@tanstack/react-query";
+
 
 const NewsLetterSchema = z.object({
   email: z
@@ -21,6 +24,45 @@ export default function NewsLetter() {
   });
 
   const [newsLetterFormError, setNewsLetterFormError] = useState<FormErrors>({});
+
+  const { toast } = useToast();
+
+  const mutation = useMutation<{ message: string }, Error, FormData>({
+    mutationFn: async (data: FormData) => {
+      const response = await fetch("/api/news-letter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to submit form");
+      }
+
+      return response.json();
+    },
+    onSuccess: async (data) => {
+      const { triggerConfetti } = await import("@/lib/confetti");
+      triggerConfetti();
+      setNewsLetterFormData({
+        email: "",
+      });
+      toast({
+        title: "Success",
+        description: data.message || "Your email has been added successfully!",
+        variant: "success",
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: "Error",
+        description: error.message || "An error occurred while submitting the form.",
+        variant: "destructive",
+      });
+    },
+  });
+
 
   const handleNewsLetterInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -49,15 +91,11 @@ export default function NewsLetter() {
     return true;
   };
 
-  const handlenewsLetterSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handlenewsLetterSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    console.log("Form submitted:", newsLetterFormData);
-
     if (validateForm()) {
-      const { triggerConfetti } = await import("@/lib/confetti");
-      triggerConfetti();
-      setNewsLetterFormData({ email: "" });
+      mutation.mutate(newsLetterFormData);
     }
   };
 
@@ -78,6 +116,7 @@ export default function NewsLetter() {
       <Button
         type="submit"
         className="bg-white text-primary hover:bg-gray-200 dark:bg-primary dark:text-white"
+        disabled={mutation.isPending}
       >
         Subscribe
       </Button>

@@ -3,7 +3,9 @@ import { useState, ChangeEvent, FormEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/components/ui/use-toast";
 import { z } from "zod";
+import { useMutation } from "@tanstack/react-query";
 
 const ContactFormSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -26,15 +28,55 @@ type FormData = z.infer<typeof ContactFormSchema>;
 type FormErrors = Partial<Record<keyof FormData, string>>;
 
 export default function ContactForm() {
-  const [formData, setFormData] = useState<FormData>({
+const [formData, setFormData] = useState<FormData>({
     name: "",
     phoneNumber: "",
     email: "",
     subject: "",
     message: "",
   });
-
   const [formErrors, setFormErrors] = useState<FormErrors>({});
+  const { toast } = useToast();
+
+  const mutation = useMutation<{ message: string }, Error, FormData>({
+    mutationFn: async (data: FormData) => {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to submit form");
+      }
+
+      return response.json();
+    },
+    onSuccess: async (data) => {
+      const { triggerConfetti } = await import("@/lib/confetti");
+      triggerConfetti();
+      setFormData({
+        name: "",
+        phoneNumber: "",
+        email: "",
+        subject: "",
+        message: "",
+      });
+      toast({
+        title: "Success",
+        description: data.message || "Your message has been sent successfully!",
+        variant: "success",
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: "Error",
+        description: error.message || "An error occurred while submitting the form.",
+        variant: "destructive",
+      });
+    },
+  });
 
   const handleContactInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -65,20 +107,11 @@ export default function ContactForm() {
     return true;
   };
 
-  const handleContactSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleContactSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (validateForm()) {
-      console.log("Form submitted:", formData);
-      const { triggerConfetti } = await import("@/lib/confetti");
-      triggerConfetti();
-      setFormData({
-        name: "",
-        phoneNumber: "",
-        email: "",
-        subject: "",
-        message: "",
-      });
+      mutation.mutate(formData);
     }
   };
 
@@ -191,8 +224,9 @@ export default function ContactForm() {
       <Button
         type="submit"
         className="col-span-1 w-full bg-primary sm:col-span-2"
+        disabled={mutation.isPending}
       >
-        Send Message
+        {mutation.isPending ? "Sending..." : "Send Message"}
       </Button>
     </form>
   );

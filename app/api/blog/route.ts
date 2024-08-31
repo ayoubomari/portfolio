@@ -5,7 +5,7 @@ import { eq , desc } from "drizzle-orm";
 import { env } from "@/env";
 import { encodeIdWithSecret } from "@/lib/crypto/dataEncoding";
 
-export async function GET() {
+export async function GET(): Promise<Response>  {
   try {
     const posts = await db
       .select()
