@@ -12,8 +12,8 @@ import { relations, sql } from "drizzle-orm";
 
 export const admin = mysqlTable("admin", {
   id: varchar("id", {
-		length: 255
-	}).primaryKey(),
+    length: 255,
+  }).primaryKey(),
   firstName: varchar("first_name", { length: 255 }).notNull(),
   lastName: varchar("last_name", { length: 255 }).notNull(),
   phoneNumber: varchar("phone_number", { length: 20 }).notNull(),
@@ -24,24 +24,26 @@ export const admin = mysqlTable("admin", {
 });
 
 export const sessionTable = mysqlTable("session", {
-	id: varchar("id", {
-		length: 255
-	}).primaryKey(),
-	userId: varchar("user_id", {
-		length: 255
-	})
-		.notNull()
-		.references(() => admin.id),
-	expiresAt: datetime("expires_at").notNull()
+  id: varchar("id", {
+    length: 255,
+  }).primaryKey(),
+  userId: varchar("user_id", {
+    length: 255,
+  })
+    .notNull()
+    .references(() => admin.id),
+  expiresAt: datetime("expires_at").notNull(),
 });
-
-
 
 export const newsLetterFormEntries = mysqlTable("news_letter_form_entries", {
   id: int("id").primaryKey().autoincrement().notNull(),
   email: varchar("email", { length: 255 }).notNull(),
-  createdAt: datetime("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
-  updatedAt: datetime("updated_at").notNull().default(sql`CURRENT_TIMESTAMP`),
+  createdAt: datetime("created_at")
+    .notNull()
+    .default(sql`CURRENT_TIMESTAMP`),
+  updatedAt: datetime("updated_at")
+    .notNull()
+    .default(sql`CURRENT_TIMESTAMP`),
 });
 
 export const contactFormEntries = mysqlTable("contact_form_entries", {
@@ -51,8 +53,12 @@ export const contactFormEntries = mysqlTable("contact_form_entries", {
   phoneNumber: varchar("phone_number", { length: 20 }),
   subject: varchar("subject", { length: 255 }).notNull(),
   message: text("message").notNull(),
-  createdAt: datetime("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
-  updatedAt: datetime("updated_at").notNull().default(sql`CURRENT_TIMESTAMP`),
+  createdAt: datetime("created_at")
+    .notNull()
+    .default(sql`CURRENT_TIMESTAMP`),
+  updatedAt: datetime("updated_at")
+    .notNull()
+    .default(sql`CURRENT_TIMESTAMP`),
 });
 
 export const blogPost = mysqlTable("blog_post", {
@@ -64,16 +70,24 @@ export const blogPost = mysqlTable("blog_post", {
   status: mysqlEnum("status", ["visible", "invisible"]).notNull(),
   author: varchar("author", { length: 255 }).notNull(),
   date: date("date").notNull(),
-  createdAt: datetime("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
-  updatedAt: datetime("updated_at").notNull().default(sql`CURRENT_TIMESTAMP`),
+  createdAt: datetime("created_at")
+    .notNull()
+    .default(sql`CURRENT_TIMESTAMP`),
+  updatedAt: datetime("updated_at")
+    .notNull()
+    .default(sql`CURRENT_TIMESTAMP`),
 });
 
 export const blogPostImage = mysqlTable("blog_post_image", {
   id: int("id").primaryKey().autoincrement().notNull(),
   src: varchar("src", { length: 255 }).notNull(),
   alt: varchar("alt", { length: 255 }).notNull(),
-  createdAt: datetime("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
-  updatedAt: datetime("updated_at").notNull().default(sql`CURRENT_TIMESTAMP`),
+  createdAt: datetime("created_at")
+    .notNull()
+    .default(sql`CURRENT_TIMESTAMP`),
+  updatedAt: datetime("updated_at")
+    .notNull()
+    .default(sql`CURRENT_TIMESTAMP`),
   blogPostId: int("blog_post_id")
     .notNull()
     .references(() => blogPost.id, { onDelete: "cascade" }),
@@ -123,16 +137,24 @@ export const project = mysqlTable("project", {
   websiteLink: varchar("website_link", { length: 255 }),
   status: mysqlEnum("status", ["visible", "invisible"]).notNull(),
   isFeatured: boolean("is_featured").notNull(),
-  createdAt: datetime("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
-  updatedAt: datetime("updated_at").notNull().default(sql`CURRENT_TIMESTAMP`),
+  createdAt: datetime("created_at")
+    .notNull()
+    .default(sql`CURRENT_TIMESTAMP`),
+  updatedAt: datetime("updated_at")
+    .notNull()
+    .default(sql`CURRENT_TIMESTAMP`),
 });
 
 export const projectImage = mysqlTable("project_image", {
   id: int("id").primaryKey().autoincrement().notNull(),
   src: varchar("src", { length: 255 }).notNull(),
   alt: varchar("alt", { length: 255 }).notNull(),
-  createdAt: datetime("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
-  updatedAt: datetime("updated_at").notNull().default(sql`CURRENT_TIMESTAMP`),
+  createdAt: datetime("created_at")
+    .notNull()
+    .default(sql`CURRENT_TIMESTAMP`),
+  updatedAt: datetime("updated_at")
+    .notNull()
+    .default(sql`CURRENT_TIMESTAMP`),
   projectId: int("project_id")
     .notNull()
     .references(() => project.id, { onDelete: "cascade" }),

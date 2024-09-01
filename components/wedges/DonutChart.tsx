@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { Pie, PieChart } from "recharts"
+import { Pie, PieChart } from "recharts";
 
 import {
   Card,
@@ -9,13 +9,13 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart"
+} from "@/components/ui/chart";
 // const chartData = [
 //   { name: "chrome", count: 275, fill: "var(--color-chrome)" },
 //   { name: "safari", count: 200, fill: "var(--color-safari)" },
@@ -24,26 +24,31 @@ import {
 //   { name: "other", count: 90, fill: "var(--color-other)" },
 // ]
 
-
 type ComponentProps = {
-    title: string;
-    subTitle: string;
-    data: { name: string; count: number }[];
-    chartLabels: string[];
-}
+  title: string;
+  subTitle: string;
+  data: { name: string; count: number }[];
+  chartLabels: string[];
+};
 
-export default function Component({ title, subTitle, data, chartLabels }: ComponentProps) {
-  const chartConfig: { [key: string]: { label: string; color: string } } = {} satisfies ChartConfig;
+export default function Component({
+  title,
+  subTitle,
+  data,
+  chartLabels,
+}: ComponentProps) {
+  const chartConfig: { [key: string]: { label: string; color: string } } =
+    {} satisfies ChartConfig;
 
-  for(let i = 0; i < data.length; i++) {
+  for (let i = 0; i < data.length; i++) {
     chartConfig[chartLabels[i]] = {
       label: chartLabels[i],
       color: `hsl(var(--chart-${i + 1}))`,
-    }    
+    };
   }
 
   return (
-    <Card className="flex flex-col">
+    <Card className="flex flex-1 flex-col md:min-w-[250px]">
       <CardHeader className="items-center pb-0">
         <CardTitle>{title}</CardTitle>
         <CardDescription>{subTitle}</CardDescription>
@@ -58,12 +63,7 @@ export default function Component({ title, subTitle, data, chartLabels }: Compon
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
             />
-            <Pie
-              data={data}
-              dataKey="count"
-              nameKey="name"
-              innerRadius={60}
-            />
+            <Pie data={data} dataKey="count" nameKey="name" innerRadius={60} />
           </PieChart>
         </ChartContainer>
       </CardContent>
@@ -73,5 +73,5 @@ export default function Component({ title, subTitle, data, chartLabels }: Compon
         </div>
       </CardFooter>
     </Card>
-  )
+  );
 }

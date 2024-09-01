@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import { TrendingUp } from "lucide-react"
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
+import { TrendingUp } from "lucide-react";
+import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
 
 import {
   Card,
@@ -10,13 +10,13 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart"
+} from "@/components/ui/chart";
 
 const chartConfig = {
   desktop: {
@@ -27,12 +27,12 @@ const chartConfig = {
     label: "Mobile",
     color: "hsl(var(--chart-2))",
   },
-} satisfies ChartConfig
+} satisfies ChartConfig;
 
 type ChartData = {
   month: string;
   [key: string]: number | string;
-}
+};
 
 // Define props type
 type ComponentProps = {
@@ -41,17 +41,21 @@ type ComponentProps = {
   data: ChartData[];
   dataKey1: string;
   dataKey2: string;
-}
+};
 
 // Update Component to use TypeScript
-export default function Component({ title, subTitle, data, dataKey1, dataKey2 }: ComponentProps) {
+export default function Component({
+  title,
+  subTitle,
+  data,
+  dataKey1,
+  dataKey2,
+}: ComponentProps) {
   return (
-    <Card>
+    <Card className="flex-1 md:min-w-[250px]">
       <CardHeader>
         <CardTitle>{title}</CardTitle>
-        <CardDescription>
-          {subTitle}
-        </CardDescription>
+        <CardDescription>{subTitle}</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
@@ -104,5 +108,5 @@ export default function Component({ title, subTitle, data, dataKey1, dataKey2 }:
         </div>
       </CardFooter>
     </Card>
-  )
+  );
 }
