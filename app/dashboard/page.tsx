@@ -28,8 +28,8 @@ import { sql, gte, and, lt, SQL, desc, eq } from "drizzle-orm";
 import Link from "next/link";
 import AreaChartComponent from "@/components/wedges/AreaChart";
 import DonutChart from "@/components/wedges/DonutChart";
-import ProjectTable from "@/components/wedges/tables/RenderTable";
 import RenderTable from "@/components/wedges/tables/RenderTable";
+import { getRowsFromTableWithLimit } from "@/lib/tables/getrows";
 
 // this for cout and percentage tables
 async function getCountAndPercentageChange(
@@ -224,20 +224,6 @@ async function getAllTop5Counts() {
 }
 
 // this for tables
-async function getRowsFromTableWithLimit(
-  table:
-    | typeof project
-    | typeof blogPost
-    | typeof contactFormEntries
-    | typeof newsLetterFormEntries,
-  limitReturn: number = 10,
-) {
-  return await db
-    .select()
-    .from(table)
-    .orderBy(desc(table.id))
-    .limit(limitReturn);
-}
 
 export default async function Page() {
   const user = await validateRequest();
@@ -280,6 +266,7 @@ export default async function Page() {
     <div className="min-h-screen py-8">
       <h1 className="mb-8 text-3xl font-bold">Dashboard</h1>
 
+      {/*cards*/}
       <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
         {renderCard(
           "Total Projects",
@@ -307,6 +294,7 @@ export default async function Page() {
         )}
       </div>
 
+      {/*charts*/}
       <div className="mb-12 flex flex-col flex-wrap gap-6 md:flex-row">
         {renderAreaChart(
           "Opportunities",
@@ -323,40 +311,65 @@ export default async function Page() {
         {rederDonutChart("Tags", "Top Tags mentioned", topTags)}
       </div>
 
+      {/*tables*/}
       <div className="space-y-8">
         <RenderTable
           title="Recent Projects"
-          button={{
-            link: "/dashboard/projects",
-            callToAction: "View All Projects",
-          }}
+          buttons={[
+            {
+              link: "/dashboard/projects",
+              callToAction: "View All Projects",
+            },
+            {
+              link: "/dashboard/projects/new",
+              callToAction: "Create New Project",
+            },
+          ]}
           data={projects}
           tableType="project"
         />
         <RenderTable
           title="Recent Blog Posts"
-          button={{
-            link: "/dashboard/blog-posts",
-            callToAction: "View All Blog Posts",
-          }}
+          buttons={[
+            {
+              link: "/dashboard/blog-posts",
+              callToAction: "View All Blog Posts",
+            },
+            {
+              link: "/dashboard/blog-posts/new",
+              callToAction: "Create New Blog Post",
+            },
+          ]}
           data={blogPosts}
           tableType="blogPost"
         />
         <RenderTable
           title="Recent Newsletter Subscriptions"
-          button={{
-            link: "/dashboard/emails",
-            callToAction: "View All Subscriptions",
-          }}
+          buttons={[
+            {
+              link: "/dashboard/emails",
+              callToAction: "View All Subscriptions",
+            },
+            {
+              link: "/dashboard/emails/new",
+              callToAction: "Create New Subscription",
+            },
+          ]}
           data={newsletters}
           tableType="newsletter"
         />
         <RenderTable
           title="Recent Contact Form Messages"
-          button={{
-            link: "/dashboard/messages",
-            callToAction: "View All messages",
-          }}
+          buttons={[
+            {
+              link: "/dashboard/messages",
+              callToAction: "View All messages",
+            },
+            {
+              link: "/dashboard/messages/new",
+              callToAction: "Create New Message",
+            },
+          ]}
           data={contactForms}
           tableType="contactForm"
         />

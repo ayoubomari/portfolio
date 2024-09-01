@@ -22,6 +22,13 @@
       "when": 1725026080619,
       "tag": "0002_living_sentinels",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1725215547783,
+      "tag": "0003_stiff_doctor_octopus",
+      "breakpoints": true
     }
   ]
 }

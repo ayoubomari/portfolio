@@ -25,7 +25,7 @@ export default function Header({
   return (
     <>
       {/* Header */}
-      <header className="fixed z-10 w-full bg-gray-100 shadow-md dark:bg-slate-800 dark:text-gray-100">
+      <header className="fixed z-50 w-full bg-gray-100 shadow-md dark:bg-slate-800 dark:text-gray-100">
         <div className="container mx-auto flex items-center justify-between px-4 py-6">
           <Link href="/" className="flex items-center gap-1">
             <Image

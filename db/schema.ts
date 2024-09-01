@@ -105,7 +105,7 @@ export const blogPostTag = mysqlTable("blog_post_tag", {
     .references(() => blogPost.id),
   tagId: int("tag_id")
     .notNull()
-    .references(() => tag.id),
+    .references(() => tag.id, { onDelete: "cascade" }),
 });
 
 export const technology = mysqlTable("technology", {
@@ -122,7 +122,7 @@ export const blogPostTechnology = mysqlTable("blog_post_technology", {
     .references(() => blogPost.id),
   technologyId: int("technology_id")
     .notNull()
-    .references(() => technology.id),
+    .references(() => technology.id, { onDelete: "cascade" }),
 });
 
 export const project = mysqlTable("project", {
@@ -167,7 +167,7 @@ export const projectTag = mysqlTable("project_tag", {
     .references(() => project.id),
   tagId: int("tag_id")
     .notNull()
-    .references(() => tag.id),
+    .references(() => tag.id, { onDelete: "cascade" }),
 });
 
 export const projectTechnology = mysqlTable("project_technology", {
@@ -177,7 +177,7 @@ export const projectTechnology = mysqlTable("project_technology", {
     .references(() => project.id),
   technologyId: int("technology_id")
     .notNull()
-    .references(() => technology.id),
+    .references(() => technology.id, { onDelete: "cascade" }),
 });
 
 // Relations
