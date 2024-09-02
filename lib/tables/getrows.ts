@@ -9,16 +9,15 @@ import {
 } from "@/db/schema";
 import { desc } from "drizzle-orm";
 
-export const getRowsFromTableWithLimit = async function (
-  table:
+export async function getRowsFromTableWithLimit<
+  T extends
     | typeof project
     | typeof blogPost
     | typeof contactFormEntries
     | typeof newsLetterFormEntries
     | typeof tag
     | typeof technology,
-  limitReturn?: number | undefined,
-) {
+>(table: T, limitReturn?: number | undefined) {
   if (!limitReturn) {
     return await db.select().from(table).orderBy(desc(table.id));
   }
@@ -28,4 +27,4 @@ export const getRowsFromTableWithLimit = async function (
     .from(table)
     .orderBy(desc(table.id))
     .limit(limitReturn);
-};
+}

@@ -102,12 +102,11 @@ export const blogPostTag = mysqlTable("blog_post_tag", {
   id: int("id").primaryKey().autoincrement().notNull(),
   blogPostId: int("blog_post_id")
     .notNull()
-    .references(() => blogPost.id),
+    .references(() => blogPost.id, { onDelete: "cascade" }),
   tagId: int("tag_id")
     .notNull()
     .references(() => tag.id, { onDelete: "cascade" }),
 });
-
 export const technology = mysqlTable("technology", {
   id: int("id").primaryKey().autoincrement().notNull(),
   name: varchar("name", { length: 255 }).notNull(),
@@ -119,7 +118,7 @@ export const blogPostTechnology = mysqlTable("blog_post_technology", {
   id: int("id").primaryKey().autoincrement().notNull(),
   blogPostId: int("blog_post_id")
     .notNull()
-    .references(() => blogPost.id),
+    .references(() => blogPost.id, { onDelete: "cascade" }),
   technologyId: int("technology_id")
     .notNull()
     .references(() => technology.id, { onDelete: "cascade" }),
@@ -164,7 +163,7 @@ export const projectTag = mysqlTable("project_tag", {
   id: int("id").primaryKey().autoincrement().notNull(),
   projectId: int("project_id")
     .notNull()
-    .references(() => project.id),
+    .references(() => project.id, { onDelete: "cascade" }),
   tagId: int("tag_id")
     .notNull()
     .references(() => tag.id, { onDelete: "cascade" }),
@@ -174,7 +173,7 @@ export const projectTechnology = mysqlTable("project_technology", {
   id: int("id").primaryKey().autoincrement().notNull(),
   projectId: int("project_id")
     .notNull()
-    .references(() => project.id),
+    .references(() => project.id, { onDelete: "cascade" }),
   technologyId: int("technology_id")
     .notNull()
     .references(() => technology.id, { onDelete: "cascade" }),

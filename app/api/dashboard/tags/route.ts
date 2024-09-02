@@ -5,6 +5,43 @@ import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { validateRequest } from "@/lib/auth/validate-request";
 
+export async function POST(req: NextRequest) {
+  const { user } = await validateRequest();
+  if (!user) {
+    return NextResponse.json(
+      { success: false, error: "Unauthorized" },
+      { status: 401 },
+    );
+  }
+
+  try {
+    const { value } = await req.json();
+    if (!value || typeof value !== "string") {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Invalid or missing tag value in request body",
+        },
+        { status: 400 },
+      );
+    }
+
+    const newTag = await db.insert(tag).values({ value }).execute();
+
+    revalidatePath("/dashboard/tags");
+    return NextResponse.json(
+      { success: true, tag: newTag[0] },
+      { status: 201 },
+    );
+  } catch (error) {
+    console.error("Failed to create the tag:", error);
+    return NextResponse.json(
+      { success: false, error: "Failed to create the tag" },
+      { status: 500 },
+    );
+  }
+}
+
 export async function DELETE(req: NextRequest) {
   const { user } = await validateRequest();
   if (!user) {
@@ -13,11 +50,9 @@ export async function DELETE(req: NextRequest) {
       { status: 401 },
     );
   }
-  console.log("user", user);
 
   try {
     const { id } = await req.json();
-
     if (!id) {
       return NextResponse.json(
         { success: false, error: "Missing id in request body" },
@@ -26,8 +61,7 @@ export async function DELETE(req: NextRequest) {
     }
 
     await db.delete(tag).where(eq(tag.id, id));
-    revalidatePath("/dashboard/blog-posts");
-
+    revalidatePath("/dashboard/tags");
     return NextResponse.json({ success: true, id }, { status: 200 });
   } catch (error) {
     console.error("Failed to delete the tag:", error);
