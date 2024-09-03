@@ -58,7 +58,9 @@ export default function Page() {
   const [thumbnail, setThumbnail] = useState<File | null>(null);
   const [status, setStatus] = useState<"visible" | "invisible">("visible");
   const [author, setAuthor] = useState("");
-  const [date, setDate] = useState(Date.now().toString());
+  const [date, setDate] = useState(
+    new Date(Date.now()).toISOString().split("T")[0],
+  );
   const [markdownContent, setMarkdownContent] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const [technologies, setTechnologies] = useState<string[]>([]);
