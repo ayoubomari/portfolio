@@ -61,6 +61,119 @@ export async function POST(req: NextRequest) {
   }
 }
 
+export async function PUT(req: NextRequest) {
+  const { user } = await validateRequest();
+  if (!user) {
+    return NextResponse.json(
+      { success: false, error: "Unauthorized" },
+      { status: 401 },
+    );
+  }
+
+  try {
+    const formData = await req.formData();
+
+    const url = new URL(req.url);
+    const id = Number(url.searchParams.get("technologyId"));
+    if (!id) {
+      return NextResponse.json(
+        { success: false, error: "Missing id in request search params" },
+        { status: 400 },
+      );
+    }
+
+    const data = {
+      name: formData.get("name") as string,
+      icon: formData.get("icon") as File | null,
+      link: formData.get("link") as string,
+    };
+
+    if (!data.name) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Invalid or missing id or value in request body",
+        },
+        { status: 400 },
+      );
+    }
+
+    const oldTechnology = await db.query.technology.findFirst({
+      where: eq(technology.id, id),
+    });
+
+    if (!oldTechnology) {
+      return NextResponse.json(
+        { success: false, error: "Technology not found" },
+        { status: 404 },
+      );
+    }
+
+    let iconName = oldTechnology.icon;
+    if (data.icon) {
+      // delete old icon if it exists
+      if (oldTechnology.icon) {
+        // delete old icon
+        await unlink(
+          path.join(
+            process.cwd(),
+            "public",
+            "uploads",
+            "technologies-icons",
+            oldTechnology.icon,
+          ),
+        );
+      }
+
+      const bytes = await data.icon.arrayBuffer();
+      const buffer = Buffer.from(bytes);
+      iconName = `${Date.now()}-${data.icon.name}`;
+      const iconPath = path.join(
+        process.cwd(),
+        "public",
+        "uploads",
+        "technologies-icons",
+        iconName,
+      );
+      await writeFile(iconPath, buffer);
+      await db
+        .update(technology)
+        .set({ icon: iconPath })
+        .where(eq(technology.id, id))
+        .execute();
+    }
+
+    const updatedTechnology = await db
+      .update(technology)
+      .set({
+        name: data.name,
+        icon: iconName,
+        link: data.link,
+      })
+      .where(eq(technology.id, id))
+      .execute();
+
+    if (!updatedTechnology[0].affectedRows) {
+      return NextResponse.json(
+        { success: false, error: "Technology not found" },
+        { status: 400 },
+      );
+    }
+
+    revalidatePath("/dashboard/technologies");
+    return NextResponse.json(
+      { success: true, technology: updatedTechnology[0].insertId },
+      { status: 200 },
+    );
+  } catch (error) {
+    console.error("Failed to update the technology:", error);
+    return NextResponse.json(
+      { success: false, error: "Failed to update the technology" },
+      { status: 500 },
+    );
+  }
+}
+
 export async function DELETE(req: NextRequest) {
   const { user } = await validateRequest();
   if (!user) {

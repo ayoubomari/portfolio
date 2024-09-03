@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,32 +10,59 @@ import { Label } from "@/components/ui/label";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 
-export default function Page() {
+type PageParams = {
+  technologyId: string;
+};
+
+export default function Page({ params }: { params: PageParams }) {
   const [name, setName] = useState("");
   const [icon, setIcon] = useState<File | null>(null);
   const [link, setLink] = useState("");
   const router = useRouter();
   const { toast } = useToast();
 
-  const createTechnology = async (formData: FormData) => {
-    const response = await fetch("/api/dashboard/technologies", {
-      method: "POST",
-      body: formData,
-    });
-
+  const fetchTechnology = async () => {
+    const response = await fetch(
+      `/api/dashboard/technologies/edit?technologyId=${params.technologyId}`,
+    );
     if (!response.ok) {
-      throw new Error("Failed to create technology");
+      throw new Error("Failed to fetch technologies");
     }
+    return response.json();
+  };
 
+  const { data: technologies, isLoading } = useQuery({
+    queryKey: ["technologies", params.technologyId],
+    queryFn: fetchTechnology,
+  });
+
+  useEffect(() => {
+    if (technologies) {
+      setName(technologies.name);
+      setLink(technologies.link);
+    }
+  }, [technologies]);
+
+  const updateTechnology = async (formData: FormData) => {
+    const response = await fetch(
+      `/api/dashboard/technologies?technologyId=${params.technologyId}`,
+      {
+        method: "PUT",
+        body: formData,
+      },
+    );
+    if (!response.ok) {
+      throw new Error("Failed to update technology");
+    }
     return response.json();
   };
 
   const mutation = useMutation({
-    mutationFn: createTechnology,
+    mutationFn: updateTechnology,
     onSuccess: () => {
       toast({
         title: "Success",
-        description: "Technology created successfully",
+        description: "Technology updated successfully",
         variant: "success",
         action: (
           <ToastAction
@@ -51,7 +78,7 @@ export default function Page() {
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Failed to create technology",
+        description: "Failed to update technology",
         action: <ToastAction altText="Try again">Try again</ToastAction>,
       });
     },
@@ -59,10 +86,13 @@ export default function Page() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
     const formData = new FormData();
+
     formData.append("name", name);
     if (icon) formData.append("icon", icon);
     formData.append("link", link);
+
     mutation.mutate(formData);
   };
 

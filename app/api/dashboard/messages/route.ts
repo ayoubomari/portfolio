@@ -49,6 +49,60 @@ export async function POST(req: NextRequest) {
   }
 }
 
+export async function PUT(req: NextRequest) {
+  const { user } = await validateRequest();
+  if (!user) {
+    return NextResponse.json(
+      { success: false, error: "Unauthorized" },
+      { status: 401 },
+    );
+  }
+
+  try {
+    const { id, name, email, phoneNumber, subject, message } = await req.json();
+    if (!id || !name || !email || !subject || !message) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Invalid or missing id or value in request body",
+        },
+        { status: 400 },
+      );
+    }
+
+    const updatedMessage = await db
+      .update(contactFormEntries)
+      .set({
+        name,
+        email,
+        phoneNumber,
+        subject,
+        message,
+      })
+      .where(eq(contactFormEntries.id, id))
+      .execute();
+
+    if (!updatedMessage[0].affectedRows) {
+      return NextResponse.json(
+        { success: false, error: "Tag not found" },
+        { status: 400 },
+      );
+    }
+
+    revalidatePath("/dashboard/messages");
+    return NextResponse.json(
+      { success: true, contactFormEntries: updatedMessage[0].insertId },
+      { status: 200 },
+    );
+  } catch (error) {
+    console.error("Failed to update the contactFormEntries:", error);
+    return NextResponse.json(
+      { success: false, error: "Failed to update the contactFormEntries" },
+      { status: 500 },
+    );
+  }
+}
+
 export async function DELETE(req: NextRequest) {
   const { user } = await validateRequest();
   if (!user) {

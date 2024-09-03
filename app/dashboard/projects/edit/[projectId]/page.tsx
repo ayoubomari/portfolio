@@ -319,7 +319,7 @@ export default function Page({ params }: { params: PageParams }) {
 
               {/* Thumbnail */}
               <div>
-                <Label htmlFor="thumbnail">Thumbnail</Label>
+                <Label htmlFor="thumbnail">Thumbnail (16:9 aspect ratio)</Label>
                 <Input
                   type="file"
                   onChange={(e) => setThumbnail(e.target.files?.[0] || null)}
