@@ -7,12 +7,20 @@ import { env } from "@/env";
 
 export const metadata: Metadata = {
   title: "Blog - Ayoub Omari Portfolio",
-  description: "Discover Ayoub Omari's insightful blog posts on web development, technology trends, and software engineering best practices.",
-  keywords: ["web development", "software engineering", "tech blog", "Ayoub Omari", "programming tips"],
+  description:
+    "Discover Ayoub Omari's insightful blog posts on web development, technology trends, and software engineering best practices.",
+  keywords: [
+    "web development",
+    "software engineering",
+    "tech blog",
+    "Ayoub Omari",
+    "programming tips",
+  ],
   authors: [{ name: "Ayoub Omari" }],
   openGraph: {
     title: "Blog - Ayoub Omari Portfolio",
-    description: "Discover Ayoub Omari's insightful blog posts on web development, technology trends, and software engineering best practices.",
+    description:
+      "Discover Ayoub Omari's insightful blog posts on web development, technology trends, and software engineering best practices.",
     url: `${env.NEXT_PUBLIC_SITE_URL}/blog`,
     siteName: "Ayoub Omari Portfolio",
     images: [
@@ -29,7 +37,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Blog - Ayoub Omari Portfolio",
-    description: "Discover Ayoub Omari's insightful blog posts on web development, technology trends, and software engineering best practices.",
+    description:
+      "Discover Ayoub Omari's insightful blog posts on web development, technology trends, and software engineering best practices.",
     images: [`${env.NEXT_PUBLIC_SITE_URL}/images/icons/icon.webp`],
     creator: "@AyoubOmari01",
   },

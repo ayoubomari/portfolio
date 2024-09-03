@@ -103,7 +103,6 @@ export async function POST(req: NextRequest) {
     if (data.thumbnail) {
       const bytes = await data.thumbnail.arrayBuffer();
       const buffer = Buffer.from(bytes);
-      fileName = `${Date.now()}-${data.thumbnail.name}`;
       const thumbnailPath = `/uploads/blog-posts-thumbnails/${fileName}`;
       const fullPath = path.join(process.cwd(), "public", thumbnailPath);
       await writeFile(fullPath, buffer);
@@ -121,6 +120,7 @@ export async function POST(req: NextRequest) {
     await writeFile(markdownPath, data.markdownContent);
 
     revalidatePath("/dashboard/blog-posts");
+    revalidatePath("/blog");
     return NextResponse.json(
       { success: true, blogPost: newBlogPost[0] },
       { status: 201 },
@@ -265,6 +265,7 @@ export async function PUT(req: NextRequest) {
     await writeFile(markdownPath, data.markdownContent);
 
     revalidatePath("/dashboard/blog-posts");
+    revalidatePath("/blog");
     return NextResponse.json(
       { success: true, blogPost: { id: data.id } },
       { status: 200 },
@@ -355,6 +356,7 @@ export async function DELETE(req: NextRequest) {
 
     await db.delete(blogPost).where(eq(blogPost.id, id));
     revalidatePath("/dashboard/blog-posts");
+    revalidatePath("/blog");
     return NextResponse.json({ success: true, id }, { status: 200 });
   } catch (error) {
     console.error("Failed to delete the blog post:", error);

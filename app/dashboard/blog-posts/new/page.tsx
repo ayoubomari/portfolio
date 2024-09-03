@@ -34,7 +34,6 @@ import {
 } from "@/components/ui/command";
 import { Checkbox } from "@/components/ui/checkbox";
 import { tag, technology } from "@/db/schema";
-import ImageUploader from "@/components/wedges/ImageUploader";
 import { DialogTitle } from "@/components/ui/dialog";
 
 type Tag = typeof tag.$inferSelect;

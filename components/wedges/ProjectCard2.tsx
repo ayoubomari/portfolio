@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { Card, CardHeader } from "../ui/card";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
@@ -35,10 +34,12 @@ export default function ProjectCard2({
     <Card className="relative rounded-xl">
       <Link href={`/projects/${slug}`}>
         <div className="rounded-xl px-5 pt-5">
-          <Image
-            src={ thumbnail ? `/uploads/projects-thumbnails/${thumbnail}` : "/assets/images/contents/thumbnail2.webp"}
-            width={400}
-            height={400}
+          <img
+            src={
+              thumbnail
+                ? `/uploads/projects-thumbnails/${thumbnail}`
+                : "/assets/images/contents/thumbnail2.webp"
+            }
             className="w-full rounded-xl object-cover"
             alt={title}
             aria-label={title}
@@ -69,9 +70,7 @@ export default function ProjectCard2({
           <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">
             {title}
           </h2>
-          <p className="text-sm text-gray-600 dark:text-gray-400">
-            {summary}
-          </p>
+          <p className="text-sm text-gray-600 dark:text-gray-400">{summary}</p>
           <div className="flex flex-wrap gap-1">
             {technologies &&
               technologies.map((technology, i) => (

@@ -6,14 +6,10 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { Button } from "@/components/ui/button";
 import RenderTable from "@/components/wedges/tables/RenderTable";
 import { contactFormEntries } from "@/db/schema";
 import { validateRequest } from "@/lib/auth/validate-request";
 import { getRowsFromTableWithLimit } from "@/lib/tables/getrows";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Link from "next/link";
 import { redirect } from "next/navigation";
 
 export default async function Page() {

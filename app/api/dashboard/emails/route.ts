@@ -114,7 +114,6 @@ export async function DELETE(req: NextRequest) {
       { status: 401 },
     );
   }
-  console.log("user", user);
 
   try {
     const { id } = await req.json();

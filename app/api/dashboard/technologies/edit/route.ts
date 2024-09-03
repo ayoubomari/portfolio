@@ -17,7 +17,6 @@ export async function GET(req: NextRequest): Promise<Response> {
 
   const url = new URL(req.url);
   const technologyId = url.searchParams.get("technologyId");
-  console.log("technologyId", technologyId);
 
   if (!technologyId) {
     return NextResponse.json(

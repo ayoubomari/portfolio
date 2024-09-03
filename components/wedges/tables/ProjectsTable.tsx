@@ -58,8 +58,6 @@ const deleteMutation = async (
     body: JSON.stringify(credentials),
   });
 
-  console.log(response);
-  console.log(response.status);
   if (!response.ok) {
     const errorData = await response.json();
     throw new Error(

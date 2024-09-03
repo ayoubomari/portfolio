@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { Card, CardHeader } from "../ui/card";
-import Image from "next/image";
 import { fromYYYY_MM_DD_to_DD_month_YYYY } from "@/lib/converters/date";
 
 export default function BlogPostCard({
@@ -19,14 +18,12 @@ export default function BlogPostCard({
   return (
     <Card className="overflow-hidden border-primary">
       <Link href={`/blog/${slug}`}>
-        <Image
+        <img
           src={
             thumbnail
               ? `/uploads/blog-posts-thumbnails/${thumbnail}`
               : "/assets/images/contents/thumbnail1.webp"
           }
-          width={400}
-          height={237}
           className="w-full object-cover"
           alt="Post thumbnail"
         />

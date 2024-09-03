@@ -65,8 +65,6 @@ export async function POST(req: NextRequest) {
       images: formData.getAll("images") as File[],
     };
 
-    console.log("data.images", data.images, typeof data.images);
-
     const blogPostExists = await db
       .select()
       .from(blogPost)

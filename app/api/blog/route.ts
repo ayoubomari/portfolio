@@ -1,11 +1,13 @@
 import { NextResponse } from "next/server";
 import { db } from "@/db/index";
 import { blogPost } from "@/db/schema";
-import { eq , desc } from "drizzle-orm";
+import { eq, desc } from "drizzle-orm";
 import { env } from "@/env";
 import { encodeIdWithSecret } from "@/lib/crypto/dataEncoding";
 
-export async function GET(): Promise<Response>  {
+export const dynamic = "force-dynamic";
+
+export async function GET(): Promise<Response> {
   try {
     const posts = await db
       .select()
@@ -15,7 +17,7 @@ export async function GET(): Promise<Response>  {
 
     // encode posts ids
     posts.map((post) => {
-     post.id = encodeIdWithSecret(post.id, env.SECRET_KEY);
+      post.id = encodeIdWithSecret(post.id, env.SECRET_KEY);
     });
 
     return NextResponse.json(posts);

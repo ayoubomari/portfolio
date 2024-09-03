@@ -112,7 +112,6 @@ export async function POST(req: NextRequest) {
     if (data.thumbnail) {
       const bytes = await data.thumbnail.arrayBuffer();
       const buffer = Buffer.from(bytes);
-      fileName = `${Date.now()}-${data.thumbnail.name}`;
       const thumbnailPath = `/uploads/projects-thumbnails/${fileName}`;
       const fullPath = path.join(process.cwd(), "public", thumbnailPath);
       await writeFile(fullPath, buffer);
@@ -130,6 +129,7 @@ export async function POST(req: NextRequest) {
     await writeFile(markdownPath, data.markdownContent);
 
     revalidatePath("/dashboard/projects");
+    revalidatePath("/projects");
     return NextResponse.json(
       { success: true, project: newProject[0] },
       { status: 201 },
@@ -246,7 +246,6 @@ export async function PUT(req: NextRequest) {
     // Update tags
     await db.delete(projectTag).where(eq(projectTag.projectId, data.id));
     if (Array.isArray(data.tagsId) && data.tagsId.length > 0) {
-      console.log("data.tagsId", data.tagsId);
       await db.insert(projectTag).values(
         data.tagsId.map((tagId) => ({
           projectId: data.id,
@@ -260,7 +259,6 @@ export async function PUT(req: NextRequest) {
       .delete(projectTechnology)
       .where(eq(projectTechnology.projectId, data.id));
     if (Array.isArray(data.technologiesId) && data.technologiesId.length > 0) {
-      console.log("data.technologiesId", data.technologiesId);
       await db.insert(projectTechnology).values(
         data.technologiesId.map((technologyId) => ({
           projectId: data.id,
@@ -278,10 +276,10 @@ export async function PUT(req: NextRequest) {
       "projects-markdowns",
       markdownFileName,
     );
-    console.log("data.markdownContent", data.markdownContent);
     await writeFile(markdownPath, data.markdownContent);
 
     revalidatePath("/dashboard/projects");
+    revalidatePath("/projects");
     return NextResponse.json(
       { success: true, project: { id: data.id } },
       { status: 200 },
@@ -372,6 +370,7 @@ export async function DELETE(req: NextRequest) {
 
     await db.delete(project).where(eq(project.id, id));
     revalidatePath("/dashboard/projects");
+    revalidatePath("/projects");
     return NextResponse.json({ success: true, id }, { status: 200 });
   } catch (error) {
     console.error("Failed to delete the project:", error);

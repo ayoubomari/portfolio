@@ -81,7 +81,7 @@ export default function ImageUploader({
     data: fetchedBlogPostImages,
     isLoading: blogPostImagesLoading,
     error: blogPostImagesError,
-  } = useQuery<(typeof blogPostImage.$inferInsert)[]>({
+  } = useQuery({
     queryKey: ["blogPostImages", tableId],
     queryFn: () => fetchImages(tableName, pathName, tableId),
   });

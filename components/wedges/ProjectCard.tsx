@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { Card, CardHeader } from "../ui/card";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
@@ -18,10 +17,12 @@ export default function ProjectCard({
   return (
     <Card className="border-0 bg-transparent shadow-none">
       <Link href={link}>
-        <Image
-          src={ thumbnail ? `/uploads/projects-thumbnails/${thumbnail}` : "/assets/images/contents/thumbnail2.webp"}
-          width={400}
-          height={400}
+        <img
+          src={
+            thumbnail
+              ? `/uploads/projects-thumbnails/${thumbnail}`
+              : "/assets/images/contents/thumbnail2.webp"
+          }
           className="w-full rounded-lg object-cover"
           alt="Project Thumbnail"
         />
