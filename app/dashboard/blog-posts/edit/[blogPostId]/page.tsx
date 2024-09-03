@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
@@ -40,6 +40,10 @@ import { DialogTitle } from "@/components/ui/dialog";
 type Tag = typeof tag.$inferSelect;
 type Technology = typeof technology.$inferSelect;
 
+type PageParams = {
+  blogPostId: string;
+};
+
 const fetchTags = async (): Promise<Tag[]> => {
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL!}/tags`);
   return response.json();
@@ -52,14 +56,24 @@ const fetchTechnologies = async (): Promise<Technology[]> => {
   return response.json();
 };
 
-export default function Page() {
+const fetchBlogPost = async (blogPostId: string) => {
+  const response = await fetch(
+    `/api/dashboard/blog-posts/edit?blogPostId=${blogPostId}`,
+  );
+  if (!response.ok) {
+    throw new Error("Failed to fetch blog post");
+  }
+  return response.json();
+};
+
+export default function Page({ params }: { params: PageParams }) {
   const [slug, setSlug] = useState("");
   const [title, setTitle] = useState("");
   const [summary, setSummary] = useState("");
   const [thumbnail, setThumbnail] = useState<File | null>(null);
   const [status, setStatus] = useState<"visible" | "invisible">("visible");
   const [author, setAuthor] = useState("");
-  const [date, setDate] = useState(Date.now().toString());
+  const [date, setDate] = useState("");
   const [markdownContent, setMarkdownContent] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const [technologies, setTechnologies] = useState<string[]>([]);
@@ -69,13 +83,16 @@ export default function Page() {
   const [selectTagDialog, setSelectTagDialog] = useState(false);
   const [selectTechDialog, setSelectTechDialog] = useState(false);
 
-  const createBlogPost = async (formData: FormData) => {
-    const response = await fetch("/api/dashboard/blog-posts", {
-      method: "POST",
-      body: formData,
-    });
+  const updateBlogPost = async (formData: FormData) => {
+    const response = await fetch(
+      `/api/dashboard/blog-posts?blogPostId=${params.blogPostId}`,
+      {
+        method: "PUT",
+        body: formData,
+      },
+    );
     if (!response.ok) {
-      throw new Error("Failed to create blog post");
+      throw new Error("Failed to update blog post");
     }
     return response.json();
   };
@@ -85,16 +102,37 @@ export default function Page() {
     queryFn: fetchTags,
   });
   const { data: techOptions } = useQuery({
-    queryKey: ["te hnologies"],
+    queryKey: ["technologies"],
     queryFn: fetchTechnologies,
   });
 
+  const { data: blogPostData } = useQuery({
+    queryKey: ["blogPost", params.blogPostId],
+    queryFn: () => fetchBlogPost(params.blogPostId),
+  });
+
+  useEffect(() => {
+    if (blogPostData) {
+      setSlug(blogPostData.slug);
+      setTitle(blogPostData.title);
+      setSummary(blogPostData.summary);
+      setStatus(blogPostData.status);
+      setAuthor(blogPostData.author);
+      setDate(new Date(blogPostData.date).toISOString().split("T")[0]);
+      setMarkdownContent(blogPostData.markdownContent);
+      setTags(blogPostData.tags.map((tag: Tag) => tag.value));
+      setTechnologies(
+        blogPostData.technologies.map((tech: Technology) => tech.name),
+      );
+    }
+  }, [blogPostData]);
+
   const mutation = useMutation({
-    mutationFn: createBlogPost,
+    mutationFn: updateBlogPost,
     onSuccess: () => {
       toast({
         title: "Success",
-        description: "Blog post created successfully",
+        description: "Blog post updated successfully",
         variant: "success",
         action: (
           <ToastAction
@@ -110,7 +148,7 @@ export default function Page() {
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Failed to create blog post",
+        description: "Failed to update blog post",
         action: <ToastAction altText="Try again">Try again</ToastAction>,
       });
     },
@@ -229,7 +267,7 @@ export default function Page() {
       <div className="container mx-auto min-h-screen py-8">
         <Card>
           <CardHeader>
-            <CardTitle>Create New Blog Post</CardTitle>
+            <CardTitle>Edit Blog Post</CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -414,9 +452,22 @@ export default function Page() {
               </div>
 
               <Button type="submit" disabled={mutation.isPending}>
-                {mutation.isPending ? "Creating..." : "Create Blog Post"}
+                {mutation.isPending ? "Updating..." : "Update Blog Post"}
               </Button>
             </form>
+          </CardContent>
+        </Card>
+
+        <Card className="mt-8">
+          <CardHeader>
+            <CardTitle>Manage Blog Post Images</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ImageUploader
+              tableId={Number(params.blogPostId)}
+              tableName="blogPost"
+              pathName="blog-posts"
+            />
           </CardContent>
         </Card>
       </div>

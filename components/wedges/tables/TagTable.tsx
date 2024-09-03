@@ -136,7 +136,7 @@ export default function TagTable({ tags }: TagTableProps) {
       </div>
 
       <div className="rounded-md border">
-        <Table>
+        <Table className="rounded-md bg-white dark:bg-gray-900">
           <TableHeader>
             <TableRow>
               <TableHead>ID</TableHead>
@@ -162,7 +162,7 @@ export default function TagTable({ tags }: TagTableProps) {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                       <DropdownMenuItem asChild>
-                        <Link href={`/dashboard/blog-posts/edit/${tag.id}`}>
+                        <Link href={`/dashboard/tags/edit/${tag.id}`}>
                           <FontAwesomeIcon
                             icon={faPen}
                             className="mr-2 h-4 w-4"

@@ -142,7 +142,7 @@ export default function TechnologyTable({
       </div>
 
       <div className="rounded-md border">
-        <Table>
+        <Table className="rounded-md bg-white dark:bg-gray-900">
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead>
@@ -182,7 +182,7 @@ export default function TechnologyTable({
                     <DropdownMenuContent align="end">
                       <DropdownMenuItem asChild>
                         <Link
-                          href={`/dashboard/blog-posts/edit/${technology.id}`}
+                          href={`/dashboard/technologies/edit/${technology.id}`}
                         >
                           <FontAwesomeIcon
                             icon={faPen}

@@ -140,7 +140,7 @@ export default function BlogPostTable({ blogPosts }: BlogPostTableProps) {
       </div>
 
       <div className="rounded-md border">
-        <Table>
+        <Table className="rounded-md bg-white dark:bg-gray-900">
           <TableHeader>
             <TableRow>
               <TableHead>Title</TableHead>

@@ -57,9 +57,12 @@ export default function Page() {
   const [title, setTitle] = useState("");
   const [summary, setSummary] = useState("");
   const [thumbnail, setThumbnail] = useState<File | null>(null);
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [githubLink, setGithubLink] = useState("");
+  const [websiteLink, setwebsiteLink] = useState("");
+  const [isFeatured, setIsFeatured] = useState(false);
   const [status, setStatus] = useState<"visible" | "invisible">("visible");
-  const [author, setAuthor] = useState("");
-  const [date, setDate] = useState(Date.now().toString());
   const [markdownContent, setMarkdownContent] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const [technologies, setTechnologies] = useState<string[]>([]);
@@ -69,13 +72,13 @@ export default function Page() {
   const [selectTagDialog, setSelectTagDialog] = useState(false);
   const [selectTechDialog, setSelectTechDialog] = useState(false);
 
-  const createBlogPost = async (formData: FormData) => {
-    const response = await fetch("/api/dashboard/blog-posts", {
+  const createProject = async (formData: FormData) => {
+    const response = await fetch("/api/dashboard/projects", {
       method: "POST",
       body: formData,
     });
     if (!response.ok) {
-      throw new Error("Failed to create blog post");
+      throw new Error("Failed to create project");
     }
     return response.json();
   };
@@ -85,23 +88,23 @@ export default function Page() {
     queryFn: fetchTags,
   });
   const { data: techOptions } = useQuery({
-    queryKey: ["te hnologies"],
+    queryKey: ["technologies"],
     queryFn: fetchTechnologies,
   });
 
   const mutation = useMutation({
-    mutationFn: createBlogPost,
+    mutationFn: createProject,
     onSuccess: () => {
       toast({
         title: "Success",
-        description: "Blog post created successfully",
+        description: "Project created successfully",
         variant: "success",
         action: (
           <ToastAction
-            altText="Go to blog posts"
-            onClick={() => router.push("/dashboard/blog-posts")}
+            altText="Go to projects"
+            onClick={() => router.push("/dashboard/projects")}
           >
-            View Blog Posts
+            View Projects
           </ToastAction>
         ),
       });
@@ -110,7 +113,7 @@ export default function Page() {
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Failed to create blog post",
+        description: "Failed to create project",
         action: <ToastAction altText="Try again">Try again</ToastAction>,
       });
     },
@@ -120,17 +123,19 @@ export default function Page() {
     e.preventDefault();
     const formData = new FormData();
 
-    setSlug(slug.toLowerCase().replace(/\s/g, "-"));
     formData.append("slug", slug.toLowerCase().replace(/\s/g, "-"));
-
     formData.append("title", title);
     formData.append("summary", summary);
     if (thumbnail) formData.append("thumbnail", thumbnail);
+    formData.append("startDate", startDate);
+    formData.append("endDate", endDate);
+    formData.append("githubLink", githubLink);
+    formData.append("websiteLink", websiteLink);
+    formData.append("isFeatured", isFeatured.toString());
     formData.append("status", status);
-    formData.append("author", author);
-    formData.append("date", date);
     formData.append("markdownContent", markdownContent);
 
+    // Handle tags and technologies (as per your original code)
     const tagsId = tagOptions
       ?.filter((tag) => tags.includes(tag.value))
       ?.map((tag) => tag.id);
@@ -161,7 +166,7 @@ export default function Page() {
       {/*select tags dialog*/}
       <CommandDialog open={selectTagDialog} onOpenChange={setSelectTagDialog}>
         <div className="hidden">
-          <DialogTitle>Select a Tags</DialogTitle>
+          <DialogTitle>Select Tags</DialogTitle>
         </div>
         <CommandInput placeholder="Search for a tag..." />
         <CommandList>
@@ -193,7 +198,7 @@ export default function Page() {
       {/*select technologies dialog*/}
       <CommandDialog open={selectTechDialog} onOpenChange={setSelectTechDialog}>
         <div className="hidden">
-          <DialogTitle>Select a Technologies</DialogTitle>
+          <DialogTitle>Select Technologies</DialogTitle>
         </div>
         <CommandInput placeholder="Search for a technology..." />
         <CommandList>
@@ -229,86 +234,74 @@ export default function Page() {
       <div className="container mx-auto min-h-screen py-8">
         <Card>
           <CardHeader>
-            <CardTitle>Create New Blog Post</CardTitle>
+            <CardTitle>Create New Project</CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="slug">Slug</Label>
-                <Input
-                  id="slug"
-                  value={slug}
-                  onChange={(e) => setSlug(e.target.value)}
-                  placeholder="Enter slug"
-                  required
-                />
-              </div>
-              <div className="space-y-2">
+              {/* Title */}
+              <div>
                 <Label htmlFor="title">Title</Label>
                 <Input
                   id="title"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  placeholder="Enter title"
-                  required
                 />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="summary">Summary</Label>
+
+              {/* Slug */}
+              <div>
+                <Label htmlFor="slug">Slug</Label>
                 <Input
+                  id="slug"
+                  value={slug}
+                  onChange={(e) =>
+                    setSlug(e.target.value.toLowerCase().replace(/\s/g, "-"))
+                  }
+                />
+              </div>
+
+              {/* Summary */}
+              <div>
+                <Label htmlFor="summary">Summary</Label>
+                <Textarea
                   id="summary"
                   value={summary}
                   onChange={(e) => setSummary(e.target.value)}
-                  placeholder="Enter summary"
-                  required
                 />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="thumbnail">Thumbnail (16:9 aspect ratio)</Label>
+
+              {/* Thumbnail */}
+              <div>
+                <Label htmlFor="thumbnail">Thumbnail</Label>
                 <Input
-                  id="thumbnail"
                   type="file"
                   onChange={(e) => setThumbnail(e.target.files?.[0] || null)}
-                  accept="image/*"
                 />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="status">Status</Label>
-                <Select
-                  value={status}
-                  onValueChange={(value: "visible" | "invisible") =>
-                    setStatus(value)
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="visible">Visible</SelectItem>
-                    <SelectItem value="invisible">Invisible</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="author">Author</Label>
+
+              {/* Start Date */}
+              <div>
+                <Label htmlFor="startDate">Start Date</Label>
                 <Input
-                  id="author"
-                  value={author}
-                  onChange={(e) => setAuthor(e.target.value)}
-                  placeholder="Enter author"
-                  required
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="date">Date</Label>
-                <Input
-                  id="date"
                   type="date"
-                  value={date}
-                  onChange={(e) => setDate(e.target.value)}
-                  required
+                  id="startDate"
+                  value={startDate}
+                  onChange={(e) => setStartDate(e.target.value)}
                 />
               </div>
+
+              {/* End Date */}
+              <div>
+                <Label htmlFor="endDate">End Date</Label>
+                <Input
+                  type="date"
+                  id="endDate"
+                  value={endDate}
+                  onChange={(e) => setEndDate(e.target.value)}
+                />
+              </div>
+
+              {/* Markdown Content */}
               <div className="space-y-2">
                 <Label htmlFor="markdownContent">Markdown Content</Label>
                 <Textarea
@@ -319,6 +312,57 @@ export default function Page() {
                   rows={10}
                   required
                 />
+              </div>
+
+              {/* GitHub Link */}
+              <div>
+                <Label htmlFor="githubLink">GitHub Link</Label>
+                <Input
+                  id="githubLink"
+                  value={githubLink}
+                  onChange={(e) => setGithubLink(e.target.value)}
+                />
+              </div>
+
+              {/* Live Link */}
+              <div>
+                <Label htmlFor="websiteLink">Live Link</Label>
+                <Input
+                  id="websiteLink"
+                  value={websiteLink}
+                  onChange={(e) => setwebsiteLink(e.target.value)}
+                />
+              </div>
+
+              {/* Featured */}
+              <div className="flex items-center gap-2">
+                <Label htmlFor="isFeatured">Featured</Label>
+                <Checkbox
+                  id="isFeatured"
+                  checked={isFeatured}
+                  onCheckedChange={(checked) =>
+                    setIsFeatured(checked.valueOf() as boolean)
+                  }
+                />
+              </div>
+
+              {/* Status */}
+              <div>
+                <Label htmlFor="status">Status</Label>
+                <Select
+                  value={status}
+                  onValueChange={(value: "visible" | "invisible") =>
+                    setStatus(value)
+                  }
+                >
+                  <SelectTrigger id="status">
+                    <SelectValue placeholder="Select status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="visible">Visible</SelectItem>
+                    <SelectItem value="invisible">Invisible</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
 
               <div className="space-y-2">
@@ -414,7 +458,7 @@ export default function Page() {
               </div>
 
               <Button type="submit" disabled={mutation.isPending}>
-                {mutation.isPending ? "Creating..." : "Create Blog Post"}
+                {mutation.isPending ? "Updating..." : "Update Project"}
               </Button>
             </form>
           </CardContent>

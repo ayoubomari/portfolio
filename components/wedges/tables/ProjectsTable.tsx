@@ -140,7 +140,7 @@ export default function ProjectTable({ projects }: ProjectTableProps) {
       </div>
 
       <div className="rounded-md border">
-        <Table>
+        <Table className="rounded-md bg-white dark:bg-gray-900">
           <TableHeader>
             <TableRow>
               <TableHead>Title</TableHead>
@@ -190,7 +190,7 @@ export default function ProjectTable({ projects }: ProjectTableProps) {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                       <DropdownMenuItem asChild>
-                        <Link href={`/dashboard/blog-posts/edit/${project.id}`}>
+                        <Link href={`/dashboard/projects/edit/${project.id}`}>
                           <FontAwesomeIcon
                             icon={faPen}
                             className="mr-2 h-4 w-4"

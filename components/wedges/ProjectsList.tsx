@@ -11,13 +11,17 @@ type ProjectsAPIResponse = typeof project.$inferSelect & {
   endDate: string | null;
   createdAt: string;
   updatedAt: string;
-  
+
   technologies: string[];
 };
 
-
 const fetchProjects = async (): Promise<ProjectsAPIResponse[]> => {
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL!}/projects`);
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch projects");
+  }
+
   return response.json();
 };
 
@@ -41,13 +45,12 @@ export default function ProjectsList() {
     });
   }
 
-
   return (
     <LazyMotion features={domAnimation}>
-        <section className="container mx-auto px-4 pb-20">
-          <p className="mb-5 text-xl font-bold">Projects</p>
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {isLoading
+      <section className="container mx-auto px-4 pb-20">
+        <p className="mb-5 text-xl font-bold">Projects</p>
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {isLoading
             ? // Loading skeletons
               Array.from({ length: 4 }).map((_, i) => (
                 <div key={i} className="space-y-4">
@@ -67,10 +70,9 @@ export default function ProjectsList() {
                 >
                   <ProjectCard2 {...project} />
                 </m.div>
-              ))
-          }
-          </div>
-        </section>
+              ))}
+        </div>
+      </section>
     </LazyMotion>
-    );
+  );
 }

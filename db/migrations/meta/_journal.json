@@ -36,6 +36,20 @@
       "when": 1725242952917,
       "tag": "0004_flimsy_wendell_rand",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1725280741887,
+      "tag": "0005_keen_morg",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1725280761405,
+      "tag": "0006_colossal_genesis",
+      "breakpoints": true
     }
   ]
 }

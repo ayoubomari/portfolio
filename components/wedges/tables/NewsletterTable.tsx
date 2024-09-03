@@ -137,7 +137,7 @@ export default function NewsletterTable({ entries }: NewsletterTableProps) {
       </div>
 
       <div className="rounded-md border">
-        <Table>
+        <Table className="rounded-md bg-white dark:bg-gray-900">
           <TableHeader>
             <TableRow>
               <TableHead>Email</TableHead>
@@ -163,7 +163,7 @@ export default function NewsletterTable({ entries }: NewsletterTableProps) {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                       <DropdownMenuItem asChild>
-                        <Link href={`/dashboard/blog-posts/edit/${entry.id}`}>
+                        <Link href={`/dashboard/emails/edit/${entry.id}`}>
                           <FontAwesomeIcon
                             icon={faPen}
                             className="mr-2 h-4 w-4"
