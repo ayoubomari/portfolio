@@ -1,7 +1,7 @@
 const express = require("express");
 const next = require("next");
 const { parse } = require("url");
-const { join } = require("path");
+const cors = require("cors"); // Import the CORS package
 
 const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
@@ -11,11 +11,11 @@ const port = process.env.PORT || 3000;
 app.prepare().then(() => {
   const server = express();
 
+  // Enable CORS for all routes
+  server.use(cors());
+
   // Serve static files from the 'public' directory
   server.use(express.static("public"));
-
-  // Handle file uploads to the 'public/images' directory
-  server.use("/upload", express.static(join(__dirname, "public", "images")));
 
   server.all("*", (req, res) => {
     const parsedUrl = parse(req.url, true);

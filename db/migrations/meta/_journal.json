@@ -5,50 +5,8 @@
     {
       "idx": 0,
       "version": "5",
-      "when": 1724864917136,
-      "tag": "0000_broken_warbound",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1724942247422,
-      "tag": "0001_bent_elektra",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1725026080619,
-      "tag": "0002_living_sentinels",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "5",
-      "when": 1725215547783,
-      "tag": "0003_stiff_doctor_octopus",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "5",
-      "when": 1725242952917,
-      "tag": "0004_flimsy_wendell_rand",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "5",
-      "when": 1725280741887,
-      "tag": "0005_keen_morg",
-      "breakpoints": true
-    },
-    {
-      "idx": 6,
-      "version": "5",
-      "when": 1725280761405,
-      "tag": "0006_colossal_genesis",
+      "when": 1725490182982,
+      "tag": "0000_youthful_skin",
       "breakpoints": true
     }
   ]

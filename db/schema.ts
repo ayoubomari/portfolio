@@ -20,7 +20,7 @@ export const admin = mysqlTable("admin", {
   username: varchar("user_name", { length: 255 }).notNull().unique(),
   email: varchar("email", { length: 255 }).notNull(),
   passwordHash: varchar("password_hash", { length: 255 }).notNull(),
-  avatar: varchar("avatar", { length: 255 }).notNull(),
+  avatar: varchar("avatar", { length: 255 }),
 });
 
 export const sessionTable = mysqlTable("session", {

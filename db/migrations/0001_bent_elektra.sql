@@ -1,1 +1,0 @@
-ALTER TABLE `contact_form_entries` DROP COLUMN `is_featured`;

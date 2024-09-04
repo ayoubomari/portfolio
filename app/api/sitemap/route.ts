@@ -1,8 +1,8 @@
 import { env } from "@/env";
-import { MetadataRoute } from "next";
 import { blogPost, project } from "@/db/schema";
 import { db } from "@/db";
 import { eq } from "drizzle-orm";
+import { NextResponse } from "next/server";
 
 // Fetch all project slugs and startDate from the database
 async function getAllProjectSlugs(): Promise<
@@ -32,7 +32,9 @@ async function getAllBlogPostSlugs(): Promise<
   return blogPosts;
 }
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+export const dynamic = "force-dynamic";
+
+export async function GET() {
   const baseUrl = env.NEXT_PUBLIC_SITE_URL;
 
   // Get dynamic routes
@@ -57,5 +59,26 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: blog.date?.toISOString() || new Date().toISOString(),
   }));
 
-  return [...routes, ...projectRoutes, ...blogRoutes];
+  const allRoutes = [...routes, ...projectRoutes, ...blogRoutes];
+
+  // Generate XML
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  ${allRoutes
+    .map(
+      (route) => `
+  <url>
+    <loc>${route.url}</loc>
+    <lastmod>${route.lastModified}</lastmod>
+  </url>`,
+    )
+    .join("")}
+</urlset>`;
+
+  // Return the XML response
+  return new NextResponse(xml, {
+    headers: {
+      "Content-Type": "application/xml",
+    },
+  });
 }

@@ -6,7 +6,7 @@ CREATE TABLE `admin` (
 	`user_name` varchar(255) NOT NULL,
 	`email` varchar(255) NOT NULL,
 	`password_hash` varchar(255) NOT NULL,
-	`avatar` varchar(255) NOT NULL,
+	`avatar` varchar(255),
 	CONSTRAINT `admin_id` PRIMARY KEY(`id`),
 	CONSTRAINT `admin_user_name_unique` UNIQUE(`user_name`)
 );
@@ -54,10 +54,9 @@ CREATE TABLE `contact_form_entries` (
 	`id` int AUTO_INCREMENT NOT NULL,
 	`name` varchar(255) NOT NULL,
 	`email` varchar(255) NOT NULL,
-	`phone` varchar(20) NOT NULL,
+	`phone_number` varchar(20),
 	`subject` varchar(255) NOT NULL,
 	`message` text NOT NULL,
-	`is_featured` boolean NOT NULL,
 	`created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	`updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	CONSTRAINT `contact_form_entries_id` PRIMARY KEY(`id`)
@@ -135,13 +134,13 @@ CREATE TABLE `technology` (
 );
 --> statement-breakpoint
 ALTER TABLE `blog_post_image` ADD CONSTRAINT `blog_post_image_blog_post_id_blog_post_id_fk` FOREIGN KEY (`blog_post_id`) REFERENCES `blog_post`(`id`) ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE `blog_post_tag` ADD CONSTRAINT `blog_post_tag_blog_post_id_blog_post_id_fk` FOREIGN KEY (`blog_post_id`) REFERENCES `blog_post`(`id`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE `blog_post_tag` ADD CONSTRAINT `blog_post_tag_tag_id_tag_id_fk` FOREIGN KEY (`tag_id`) REFERENCES `tag`(`id`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE `blog_post_technology` ADD CONSTRAINT `blog_post_technology_blog_post_id_blog_post_id_fk` FOREIGN KEY (`blog_post_id`) REFERENCES `blog_post`(`id`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE `blog_post_technology` ADD CONSTRAINT `blog_post_technology_technology_id_technology_id_fk` FOREIGN KEY (`technology_id`) REFERENCES `technology`(`id`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE `blog_post_tag` ADD CONSTRAINT `blog_post_tag_blog_post_id_blog_post_id_fk` FOREIGN KEY (`blog_post_id`) REFERENCES `blog_post`(`id`) ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE `blog_post_tag` ADD CONSTRAINT `blog_post_tag_tag_id_tag_id_fk` FOREIGN KEY (`tag_id`) REFERENCES `tag`(`id`) ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE `blog_post_technology` ADD CONSTRAINT `blog_post_technology_blog_post_id_blog_post_id_fk` FOREIGN KEY (`blog_post_id`) REFERENCES `blog_post`(`id`) ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE `blog_post_technology` ADD CONSTRAINT `blog_post_technology_technology_id_technology_id_fk` FOREIGN KEY (`technology_id`) REFERENCES `technology`(`id`) ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE `project_image` ADD CONSTRAINT `project_image_project_id_project_id_fk` FOREIGN KEY (`project_id`) REFERENCES `project`(`id`) ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE `project_tag` ADD CONSTRAINT `project_tag_project_id_project_id_fk` FOREIGN KEY (`project_id`) REFERENCES `project`(`id`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE `project_tag` ADD CONSTRAINT `project_tag_tag_id_tag_id_fk` FOREIGN KEY (`tag_id`) REFERENCES `tag`(`id`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE `project_technology` ADD CONSTRAINT `project_technology_project_id_project_id_fk` FOREIGN KEY (`project_id`) REFERENCES `project`(`id`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE `project_technology` ADD CONSTRAINT `project_technology_technology_id_technology_id_fk` FOREIGN KEY (`technology_id`) REFERENCES `technology`(`id`) ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE `project_tag` ADD CONSTRAINT `project_tag_project_id_project_id_fk` FOREIGN KEY (`project_id`) REFERENCES `project`(`id`) ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE `project_tag` ADD CONSTRAINT `project_tag_tag_id_tag_id_fk` FOREIGN KEY (`tag_id`) REFERENCES `tag`(`id`) ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE `project_technology` ADD CONSTRAINT `project_technology_project_id_project_id_fk` FOREIGN KEY (`project_id`) REFERENCES `project`(`id`) ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE `project_technology` ADD CONSTRAINT `project_technology_technology_id_technology_id_fk` FOREIGN KEY (`technology_id`) REFERENCES `technology`(`id`) ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE `session` ADD CONSTRAINT `session_user_id_admin_id_fk` FOREIGN KEY (`user_id`) REFERENCES `admin`(`id`) ON DELETE no action ON UPDATE no action;
