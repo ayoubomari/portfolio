@@ -4,6 +4,7 @@ import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import ReactQueryProvider from "@/components/providers/ReactQueryProvider";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import { env } from "@/env";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -12,9 +13,59 @@ const fontSans = FontSans({
 });
 
 export const metadata: Metadata = {
-  title: "Ayoub Omari",
+  title: "Ayoub Omari - Full Stack Web3 Developer",
   description:
-    "Portfolio of Ayoub Omari, a full-stack developer, based in Morocco.",
+    "Explore Ayoub Omari's portfolio showcasing expertise in full-stack development, Web3, blockchain, and e-commerce solutions.",
+  keywords: [
+    "Full Stack Developer",
+    "Web3",
+    "Blockchain",
+    "Algorand",
+    "Smart Contracts",
+    "E-commerce",
+    "React",
+    "golang",
+    "Node.js",
+    "Spring Boot",
+    "Ayoub Omari",
+  ],
+  authors: [{ name: "Ayoub Omari" }],
+  openGraph: {
+    title: "Ayoub Omari - Full Stack Web3 Developer Portfolio",
+    description:
+      "Discover Ayoub Omari's innovative projects and professional experience in full-stack development, Web3, and blockchain technologies.",
+    url: `${env.NEXT_PUBLIC_SITE_URL}`,
+    siteName: "Ayoub Omari Portfolio",
+    images: [
+      {
+        url: `${env.NEXT_PUBLIC_SITE_URL}/images/icons/icon.webp`,
+        width: 1200,
+        height: 630,
+        alt: "Ayoub Omari's Portfolio",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Ayoub Omari - Full Stack Web3 Developer Portfolio",
+    description:
+      "Discover Ayoub Omari's innovative projects and professional experience in full-stack development, Web3, and blockchain technologies.",
+    images: [`${env.NEXT_PUBLIC_SITE_URL}/images/icons/icon.webp`],
+    creator: "@AyoubOmari01",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
+  },
+  alternates: {
+    canonical: `${env.NEXT_PUBLIC_SITE_URL}`,
+  },
 };
 
 export default function RootLayout({

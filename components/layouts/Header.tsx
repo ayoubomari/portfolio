@@ -31,8 +31,8 @@ export default function Header({
             <Image
               src="/assets/images/icons/logo.webp"
               alt="logo"
-              width={32}
-              height={32}
+              width={38}
+              height={38}
             />
             <span className="cursor-pointer text-2xl font-bold">
               Ayoub Omari

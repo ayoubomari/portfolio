@@ -78,6 +78,7 @@ export async function PUT(req: NextRequest) {
         phoneNumber,
         subject,
         message,
+        updatedAt: new Date(),
       })
       .where(eq(contactFormEntries.id, id))
       .execute();

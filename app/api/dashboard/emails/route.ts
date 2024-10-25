@@ -81,6 +81,7 @@ export async function PUT(req: NextRequest) {
       .update(newsLetterFormEntries)
       .set({
         email,
+        updatedAt: new Date(),
       })
       .where(eq(newsLetterFormEntries.id, id))
       .execute();

@@ -41,10 +41,13 @@ export async function GET() {
   const projectSlugs = await getAllProjectSlugs();
   const blogPostSlugs = await getAllBlogPostSlugs();
 
+  // defined the date of deployment
+  const deploymentDate = new Date("2024-10-25T00:00:00.000Z");
+
   // Static routes
   const routes = ["", "/projects", "/blog", "/contact"].map((route) => ({
     url: `${baseUrl}${route}`,
-    lastModified: new Date().toISOString(),
+    lastModified: deploymentDate.toISOString(),
   }));
 
   // Project routes

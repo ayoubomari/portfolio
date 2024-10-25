@@ -12,12 +12,60 @@ import {
 import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons";
 import ContactForm from "@/components/forms/ContactForm";
 import { Metadata } from "next";
+import { env } from "@/env";
 library.add(faPhone, faEnvelope, faGithub, faLinkedin, faUpRightFromSquare);
 
 export const metadata: Metadata = {
-  title: "Ayoub Omari | Contact Page",
+  title: "Contact Ayoub Omari - Full Stack Web3 Developer",
   description:
-    "Let's Connect and Create Something Amazing. (web development, app development, and more)",
+    "Get in touch with Ayoub Omari, a skilled Full Stack Web3 Developer with expertise in blockchain, e-commerce, and innovative web solutions.",
+  keywords: [
+    "Contact Ayoub Omari",
+    "Full Stack Developer",
+    "Web3 Developer",
+    "Blockchain Expert",
+    "E-commerce Developer",
+    "Hire Developer",
+    "Freelance Developer",
+    "Moroccan Developer",
+  ],
+  authors: [{ name: "Ayoub Omari" }],
+  openGraph: {
+    title: "Contact Ayoub Omari - Full Stack Web3 Developer",
+    description:
+      "Reach out to Ayoub Omari for full-stack development, Web3, blockchain, and e-commerce projects. Let's collaborate on your next innovative solution.",
+    url: `${env.NEXT_PUBLIC_SITE_URL}/contact`,
+    siteName: "Ayoub Omari Portfolio",
+    images: [
+      {
+        url: `${env.NEXT_PUBLIC_SITE_URL}/images/icons/icon.webp`,
+        width: 1200,
+        height: 630,
+        alt: "Contact Ayoub Omari",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Contact Ayoub Omari - Full Stack Web3 Developer",
+    description:
+      "Reach out to Ayoub Omari for full-stack development, Web3, blockchain, and e-commerce projects. Let's collaborate on your next innovative solution.",
+    images: [`${env.NEXT_PUBLIC_SITE_URL}/images/icons/icon.webp`],
+    creator: "@AyoubOmari01",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
+  },
+  alternates: {
+    canonical: `${env.NEXT_PUBLIC_SITE_URL}/contact`,
+  },
 };
 
 export default function Contact() {

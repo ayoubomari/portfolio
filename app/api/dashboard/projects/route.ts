@@ -240,6 +240,7 @@ export async function PUT(req: NextRequest) {
         websiteLink: data.githubLink || null,
         status: data.status,
         isFeatured: data.isFeatured,
+        updatedAt: new Date(),
       })
       .where(eq(project.id, data.id));
 
