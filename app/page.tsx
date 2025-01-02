@@ -61,12 +61,10 @@ export default function Home() {
                 </Link>
               </div>
               <p className="mb-4 text-3xl font-bold md:text-4xl">
-                Crafting Digital Experiences That Inspire 🚀
+              Web3 & Full-Stack Developer | Crafting the Future 🚀
               </p>
               <h1 className="mb-6 text-lg md:text-xl">
-                Full Stack Web3 Developer specializing in blockchain, Mobile
-                Development, and cutting-edge web technologies. Let's build the
-                future together! 🌟
+              Bringing blockchain solutions and DeFi innovations to life with cutting-edge technologies. Let's collaborate! 🌟
               </h1>
               <div className="flex flex-wrap gap-4">
                 <Link

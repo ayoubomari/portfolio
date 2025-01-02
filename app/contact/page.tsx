@@ -123,7 +123,7 @@ export default function Contact() {
 
         {/* Contact Section */}
         <section
-          className="bg-white pb-20 text-gray-900 dark:bg-black dark:text-gray-100"
+          className="bg-white py-20 text-gray-900 dark:bg-black dark:text-gray-100"
           id="contact"
         >
           <div className="container mx-auto px-4">
