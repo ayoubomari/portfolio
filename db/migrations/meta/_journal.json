@@ -1,0 +1,41 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1735831213950,
+      "tag": "0000_next_sumo",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1735831366108,
+      "tag": "0001_clean_spirit",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1735831504653,
+      "tag": "0002_romantic_silver_sable",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1735831597432,
+      "tag": "0003_clean_taskmaster",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1735832385765,
+      "tag": "0004_late_ma_gnuci",
+      "breakpoints": true
+    }
+  ]
+}

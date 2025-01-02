@@ -36,25 +36,27 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var mysql = require("mysql2/promise");
+var pg_1 = require("pg"); // PostgreSQL client
 var readline = require("readline/promises");
 var crypto = require("crypto");
 var dotenv = require("dotenv");
 var argon2_1 = require("@node-rs/argon2");
 // Load environment variables from .env file
 dotenv.config();
-// Create a MySQL connection pool using environment variables
-var pool = mysql.createPool({
+// Create a PostgreSQL connection pool using environment variables
+var pool = new pg_1.Pool({
     host: process.env.DATABASE_HOST,
     user: process.env.DATABASE_USERNAME,
     password: process.env.DATABASE_PASSWORD,
     database: process.env.DATABASE_NAME,
+    port: process.env.DATABASE_PORT ? Number(process.env.DATABASE_PORT) : 5432, // Default PostgreSQL port
+    ssl: false, // Optional SSL
 });
 function generateRandomId(length) {
     if (length === void 0) { length = 32; }
     return crypto.randomBytes(length).toString("hex");
 }
-// generate hash password
+// Generate hash password using Argon2
 function hashPassword(password) {
     return __awaiter(this, void 0, void 0, function () {
         var passwordHash, error_1;
@@ -83,7 +85,7 @@ function hashPassword(password) {
 }
 function initializeAdmin() {
     return __awaiter(this, void 0, void 0, function () {
-        var rl, firstName, lastName, phoneNumber, username, email, password, avatar, passwordHash, result, error_2;
+        var rl, firstName, lastName, phoneNumber, username, email, password, avatar, passwordHash, query, values, result, error_2;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -93,7 +95,7 @@ function initializeAdmin() {
                     });
                     _a.label = 1;
                 case 1:
-                    _a.trys.push([1, 11, 12, 13]);
+                    _a.trys.push([1, 11, 12, 14]);
                     return [4 /*yield*/, rl.question("Enter admin first name: ")];
                 case 2:
                     firstName = _a.sent();
@@ -118,30 +120,36 @@ function initializeAdmin() {
                     return [4 /*yield*/, hashPassword(password)];
                 case 9:
                     passwordHash = _a.sent();
-                    return [4 /*yield*/, pool.query("INSERT INTO admin (id, first_name, last_name, phone_number, user_name, email, password_hash, avatar) \n       VALUES (?, ?, ?, ?, ?, ?, ?, ?)", [
-                            generateRandomId(),
-                            firstName,
-                            lastName,
-                            phoneNumber,
-                            username,
-                            email,
-                            passwordHash,
-                            avatar || null, // Optional avatar
-                        ])];
+                    query = "\n      INSERT INTO admin (\n        id, first_name, last_name, phone_number, user_name, email, password_hash, avatar\n      ) \n      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)\n      RETURNING *;\n    ";
+                    values = [
+                        generateRandomId(),
+                        firstName,
+                        lastName,
+                        phoneNumber,
+                        username,
+                        email,
+                        passwordHash,
+                        avatar || null, // Optional avatar
+                    ];
+                    return [4 /*yield*/, pool.query(query, values)];
                 case 10:
-                    result = (_a.sent())[0];
-                    console.log("Admin initialized successfully", result);
-                    return [3 /*break*/, 13];
+                    result = _a.sent();
+                    console.log("Admin initialized successfully:", result.rows[0]);
+                    return [3 /*break*/, 14];
                 case 11:
                     error_2 = _a.sent();
                     console.error("Error initializing admin:", error_2);
-                    return [3 /*break*/, 13];
+                    return [3 /*break*/, 14];
                 case 12:
                     // Close the readline interface
                     rl.close();
-                    pool.end(); // Close the MySQL connection
+                    // End the PostgreSQL pool
+                    return [4 /*yield*/, pool.end()];
+                case 13:
+                    // End the PostgreSQL pool
+                    _a.sent();
                     return [7 /*endfinally*/];
-                case 13: return [2 /*return*/];
+                case 14: return [2 /*return*/];
             }
         });
     });

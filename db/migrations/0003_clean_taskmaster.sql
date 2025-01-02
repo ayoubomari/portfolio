@@ -1,0 +1,1 @@
+ALTER TABLE "news_letter_form_entries" ALTER COLUMN "id" SET DATA TYPE serial;

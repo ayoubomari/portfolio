@@ -7,6 +7,7 @@ const NewsLetterFormEntries = z.object({
   email: z.string().min(1, "Email is required").email("Email is invalid"),
 });
 
+
 export async function POST(request: Request): Promise<Response> {
   const formData = await request.json();
   const result = NewsLetterFormEntries.safeParse(formData);

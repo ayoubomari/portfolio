@@ -1,4 +1,4 @@
-import { Pool } from "pg"; // PostgreSQL client
+import * as mysql from "mysql2/promise";
 import * as readline from "readline/promises";
 import * as crypto from "crypto";
 import * as dotenv from "dotenv";
@@ -7,21 +7,19 @@ import { hash } from "@node-rs/argon2";
 // Load environment variables from .env file
 dotenv.config();
 
-// Create a PostgreSQL connection pool using environment variables
-const pool = new Pool({
+// Create a MySQL connection pool using environment variables
+const pool = mysql.createPool({
   host: process.env.DATABASE_HOST,
   user: process.env.DATABASE_USERNAME,
   password: process.env.DATABASE_PASSWORD,
   database: process.env.DATABASE_NAME,
-  port: process.env.DATABASE_PORT ? Number(process.env.DATABASE_PORT) : 5432, // Default PostgreSQL port
-  ssl: false, // Optional SSL
 });
 
 function generateRandomId(length = 32) {
   return crypto.randomBytes(length).toString("hex");
 }
 
-// Generate hash password using Argon2
+// generate hash password
 async function hashPassword(password: string): Promise<string> {
   try {
     const passwordHash = await hash(password, {
@@ -54,41 +52,35 @@ async function initializeAdmin() {
     const email = await rl.question("Enter admin email: ");
     const password = await rl.question("Enter admin password: ");
     const avatar = await rl.question(
-      "Enter admin avatar URL (or leave blank): "
+      "Enter admin avatar URL (or leave blank): ",
     );
 
     // Hash the password
     const passwordHash = await hashPassword(password);
 
-    // Insert the admin data using parameterized PostgreSQL query
-    const query = `
-      INSERT INTO admin (
-        id, first_name, last_name, phone_number, user_name, email, password_hash, avatar
-      ) 
-      VALUES (\$1, \$2, \$3, \$4, \$5, \$6, \$7, \$8)
-      RETURNING *;
-    `;
-    const values = [
-      generateRandomId(),
-      firstName,
-      lastName,
-      phoneNumber,
-      username,
-      email,
-      passwordHash,
-      avatar || null, // Optional avatar
-    ];
+    // Insert the admin data using raw MySQL2 query
+    const [result] = await pool.query(
+      `INSERT INTO admin (id, first_name, last_name, phone_number, user_name, email, password_hash, avatar) 
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        generateRandomId(),
+        firstName,
+        lastName,
+        phoneNumber,
+        username,
+        email,
+        passwordHash,
+        avatar || null, // Optional avatar
+      ],
+    );
 
-    const result = await pool.query(query, values);
-
-    console.log("Admin initialized successfully:", result.rows[0]);
+    console.log("Admin initialized successfully", result);
   } catch (error) {
     console.error("Error initializing admin:", error);
   } finally {
     // Close the readline interface
     rl.close();
-    // End the PostgreSQL pool
-    await pool.end();
+    pool.end(); // Close the MySQL connection
   }
 }
 

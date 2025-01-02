@@ -1,0 +1,1 @@
+ALTER TABLE "contact_form_entries" ALTER COLUMN "id" DROP DEFAULT;
