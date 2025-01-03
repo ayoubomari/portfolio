@@ -104,19 +104,28 @@ export default function Home() {
               <Card className="flex flex-col items-center px-6 py-9 text-center">
                 <Image
                   src="/assets/images/icons/web-design.webp"
-                  alt="Full Stack Development"
+                  alt="Frontend Development"
                   width={50}
                   height={50}
                   className="mb-4"
                 />
                 <h3 className="mb-4 text-xl font-bold">
-                  Full Stack Development
+                  Frontend Development
                 </h3>
                 <p className="text-sm">
-                  I build responsive interfaces, build robust server-side logic,
-                  and manage scalable databases to create powerful web
-                  applications.
-                </p>
+                I craft responsive and accessible user interfaces with clean, modular design principles, focusing on intuitive user experiences and modern web standards.</p>
+              </Card>
+              <Card className="flex flex-col items-center px-6 py-9 text-center">
+                <Image
+                  src="/assets/images/icons/serveur.webp"
+                  alt="Backend Development"
+                  width={50}
+                  height={50}
+                  className="mb-4"
+                />
+                <h3 className="mb-4 text-xl font-bold">Backend Development</h3>
+                <p className="text-sm">
+                I architect scalable and secure server solutions with clean code practices, implementing robust APIs and optimized database structures following industry standards.                </p>
               </Card>
               <Card className="flex flex-col items-center px-6 py-9 text-center">
                 <Image
@@ -131,21 +140,6 @@ export default function Home() {
                   I develop smart contracts, create decentralized applications,
                   and leverage blockchain technologies for advanced web
                   solutions.
-                </p>
-              </Card>
-              <Card className="flex flex-col items-center px-6 py-9 text-center">
-                <Image
-                  src="/assets/images/icons/mobile-app.webp"
-                  alt="Mobile Development"
-                  width={50}
-                  height={50}
-                  className="mb-4"
-                />
-                <h3 className="mb-4 text-xl font-bold">Mobile Development</h3>
-                <p className="text-sm">
-                  We design and build intuitive, high-performance mobile
-                  applications for iOS and Android platforms, ensuring seamless
-                  user experiences.
                 </p>
               </Card>
             </div>
@@ -264,11 +258,11 @@ export default function Home() {
                   <Tag text="Express.js" />
                   <Tag text="Golang" />
                   <Tag text="Fiber" />
-                  <Tag text="MySQL" />
+                  <Tag text="SQL" />
                   <Tag text="MongoDB" />
-                  <Tag text="Spring Boot" />
+                  <Tag text="Docker" />
                   <Tag text="GraphQL" />
-                  <Tag text="Prisma" />
+                  <Tag text="Redis" />
                 </div>
               </Card>
               <Card className="p-6">
