@@ -182,39 +182,39 @@ export default function Home() {
                 description="Website/Landing page"
               /> */}
               <ProjectCard2
-                thumbnail="project1.webp"
-                slug="full-stack-frontiers"
-                title="Car Rent"
-                summary="Web-based platform that allows users to search, book, and manage car rentals from various providers."
-                technologies={["react", "mongoodb", "tailwind"]}
-                githubLink="https://www.github.com/ayoubomari"
-                websiteLink="https://www.google.com/"
+                thumbnail="lahagni_thumb.webp"
+                slug="lahagni"
+                title="Lahagni App"
+                summary="A mobile app for driving sharing, where users can book rides, manage their vehicles, and submite proposals."
+                technologies={["Golang", "Postgresql", "NextJS"]}
+                // githubLink="https://www.github.com/ayoubomari"
+                websiteLink="https://www.lahagni.com/"
               />
               <ProjectCard2
-                thumbnail="project2.webp"
-                slug="full-stack-frontiers"
-                title="Car Rent"
-                summary="Web-based platform that allows users to search, book, and manage car rentals from various providers."
-                technologies={["react", "mongoodb", "tailwind"]}
-                githubLink="https://www.github.com/ayoubomari"
-                websiteLink="https://www.google.com/"
+                thumbnail="arbitrage_thumb.webp"
+                slug="algorand-arbitrage-bot"
+                title="Algorand Arbitrage Bot"
+                summary="A bot that automates the execution of arbitrage opportunities on Algorand, maximizing returns and minimizing risk."
+                technologies={["NodeJS", "Typescript", "Pyteal"]}
+                // githubLink="https://www.github.com/ayoubomari"
+                websiteLink="https://allo.info/account/IMY4T476PRNOSCNNHDBLEOIEU3HOE6FM3VY6RFEJ7CQKWWOPZBATTXRXJM"
               />
               <ProjectCard2
-                thumbnail="project3.webp"
-                slug="full-stack-frontiers"
-                title="Car Rent"
-                summary="Web-based platform that allows users to search, book, and manage car rentals from various providers."
-                technologies={["react", "mongoodb", "tailwind"]}
-                githubLink="https://www.github.com/ayoubomari"
-                websiteLink="https://www.google.com/"
+                thumbnail="pacshare_thumb.webp"
+                slug="pacshare-chat-bot"
+                title="PacShare Chat Bot"
+                summary="Facebook Messenger Chatbot that help people with limit internet access to fetch content from the web."
+                technologies={["Golang", "Web-Scraping", "Chatbot"]}
+                githubLink="https://github.com/ayoubomari/pacshare"
+                websiteLink="https://www.facebook.com/pacshare1"
               />
               <ProjectCard2
-                thumbnail="project1.webp"
-                slug="full-stack-frontiers"
-                title="Car Rent"
-                summary="Web-based platform that allows users to search, book, and manage car rentals from various providers."
-                technologies={["react", "mongoodb", "tailwind"]}
-                githubLink="https://www.github.com/ayoubomari"
+                thumbnail="checkers_thumb.webp"
+                slug="dame"
+                title="Dame Game"
+                summary="A desktop GUI game of checkers where players can play against each other or against the computer."
+                technologies={["JAVA", "AWT", "Swing"]}
+                githubLink="https://www.github.com/ayoubomari/dame"
                 websiteLink="https://www.google.com/"
               />
             </div>
@@ -316,7 +316,7 @@ export default function Home() {
                   <AccordionContent>
                     Clear and consistent communication is key to project
                     success. I use tools like Slack for daily updates,
-                    Bbsidian's Kanban or Jira for project management, and
+                    Obsidian's Kanban or Jira for project management, and
                     schedule regular video calls for in-depth discussions.
                     You'll always be kept in the loop about project progress,
                     challenges, and milestones.

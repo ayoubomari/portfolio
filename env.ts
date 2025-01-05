@@ -12,6 +12,12 @@ const envSchema = z.object({
   SECRET_KEY: z.string(),
   NEXT_PUBLIC_SITE_URL: z.string(),
   NEXT_PUBLIC_API_URL: z.string(),
+
+  SMTP_HOST: z.string(),
+  SMTP_PORT: z.string(),
+  SMTP_EMAIL: z.string().email(),
+  SMTP_PASSWORD: z.string(),
+  RECEIVER_EMAIL: z.string().email(),
 });
 
 export const env = envSchema.parse(process.env);

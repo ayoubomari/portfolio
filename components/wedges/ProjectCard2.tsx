@@ -27,8 +27,8 @@ export default function ProjectCard2({
   slug: string;
   summary: string;
   technologies: string[];
-  githubLink: string | null;
-  websiteLink: string | null;
+  githubLink?: string | null;
+  websiteLink?: string | null;
 }) {
   return (
     <Card className="relative rounded-xl">

@@ -85,7 +85,7 @@ function hashPassword(password) {
 }
 function initializeAdmin() {
     return __awaiter(this, void 0, void 0, function () {
-        var rl, firstName, lastName, phoneNumber, username, email, password, avatar, passwordHash, query, values, result, error_2;
+        var rl, firstName, lastName, phoneNumber, username, email, password, avatar, passwordHash, query, values, error_2;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -95,7 +95,7 @@ function initializeAdmin() {
                     });
                     _a.label = 1;
                 case 1:
-                    _a.trys.push([1, 11, 12, 14]);
+                    _a.trys.push([1, 10, 11, 13]);
                     return [4 /*yield*/, rl.question("Enter admin first name: ")];
                 case 2:
                     firstName = _a.sent();
@@ -131,25 +131,22 @@ function initializeAdmin() {
                         passwordHash,
                         avatar || null, // Optional avatar
                     ];
-                    return [4 /*yield*/, pool.query(query, values)];
+                    console.log("passwordHash", passwordHash);
+                    return [3 /*break*/, 13];
                 case 10:
-                    result = _a.sent();
-                    console.log("Admin initialized successfully:", result.rows[0]);
-                    return [3 /*break*/, 14];
-                case 11:
                     error_2 = _a.sent();
                     console.error("Error initializing admin:", error_2);
-                    return [3 /*break*/, 14];
-                case 12:
+                    return [3 /*break*/, 13];
+                case 11:
                     // Close the readline interface
                     rl.close();
                     // End the PostgreSQL pool
                     return [4 /*yield*/, pool.end()];
-                case 13:
+                case 12:
                     // End the PostgreSQL pool
                     _a.sent();
                     return [7 /*endfinally*/];
-                case 14: return [2 /*return*/];
+                case 13: return [2 /*return*/];
             }
         });
     });

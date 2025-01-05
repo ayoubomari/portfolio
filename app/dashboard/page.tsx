@@ -62,8 +62,10 @@ async function getCountAndPercentageChange(
     .from(table)
     .where(gte(table.createdAt, firstDayOfMonth));
 
-  const prevCount = lastMonthCount[0].count;
-  const count = currentMonthCount[0].count;
+  const prevCount = Number(lastMonthCount[0].count);
+  const count = Number(currentMonthCount[0].count);
+  console.log("prevCount", prevCount, typeof prevCount);
+  console.log("count", count, typeof count);
   const percentageChange =
     prevCount !== 0 ? ((count - prevCount) / prevCount) * 100 : 0;
 
