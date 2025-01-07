@@ -38,7 +38,7 @@ export default function Footer() {
               <div className="flex flex-col space-y-2">
                 <Link
                   target="_blank"
-                  href="https://www.linkedin.com/in/Linkyoub-omari-58140a1a4/"
+                  href="https://www.linkedin.com/in/ayoub-omari-58140a1a4/"
                   className="flex items-center text-gray-100 hover:underline"
                 >
                   <FontAwesomeIcon icon={faLinkedin} className="mr-2 h-6 w-6" />
