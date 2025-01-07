@@ -37,7 +37,7 @@
 - **Database:** PostgreSQL with Drizzle ORM
 - **Authentication:** Lucia Auth
 - **Email:** Nodemailer
-- **UI Components:** Radix UI
+- **UI Components:** Shadcn UI
 - **Charts:** Recharts
 - **Markdown:** React Markdown
 - **Icons:** Lucide React, Font Awesome
@@ -46,7 +46,7 @@
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/portfolio.git
+git clone https://github.com/ayoubomari/portfolio.git
 cd portfolio
 ```
 
@@ -93,6 +93,7 @@ npm run dev
 
 ## 📁 Project Structure
 
+```
 .
 ├── app/                # Next.js app directory
 │   ├── api/           # API routes
@@ -106,6 +107,7 @@ npm run dev
 ├── db/               # Database configuration
 ├── lib/              # Utility functions
 └── public/           # Static assets
+```
 
 ## 🛠️ Development
 ```bash
