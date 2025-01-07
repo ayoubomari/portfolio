@@ -29,12 +29,18 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    let iconPath = null;
+    let fileName = "";
     if (icon) {
       const bytes = await icon.arrayBuffer();
       const buffer = Buffer.from(bytes);
-      const fileName = `${Date.now()}-${icon.name}`;
-      iconPath = `${fileName}`;
+      fileName = `${Date.now()}-${icon.name}`;
+      const iconPath = path.join(
+        process.cwd(),
+        "public",
+        "uploads",
+        "technologies-icons",
+        fileName,
+      );
       await writeFile(iconPath, buffer);
     }
 
@@ -42,7 +48,7 @@ export async function POST(req: NextRequest) {
       .insert(technology)
       .values({
         name,
-        icon: iconPath,
+        icon: fileName,
         link: link || null,
       })
       .execute();
@@ -151,9 +157,11 @@ export async function PUT(req: NextRequest) {
         link: data.link,
       })
       .where(eq(technology.id, id))
-      .execute();
+      .returning({ id: technology.id })
 
-    if (!updatedTechnology[0].affectedRows) {
+    const newUpdatedTechnologyId = updatedTechnology[0]?.id; // Access the returned `id`
+
+    if (!newUpdatedTechnologyId) {
       return NextResponse.json(
         { success: false, error: "Technology not found" },
         { status: 400 },
@@ -162,7 +170,7 @@ export async function PUT(req: NextRequest) {
 
     revalidatePath("/dashboard/technologies");
     return NextResponse.json(
-      { success: true, technology: updatedTechnology[0].insertId },
+      { success: true, technology: newUpdatedTechnologyId },
       { status: 200 },
     );
   } catch (error) {

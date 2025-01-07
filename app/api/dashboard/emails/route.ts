@@ -84,9 +84,11 @@ export async function PUT(req: NextRequest) {
         updatedAt: new Date(),
       })
       .where(eq(newsLetterFormEntries.id, id))
-      .execute();
+      .returning({ id: newsLetterFormEntries.id })
 
-    if (!updatedEmail[0].affectedRows) {
+    const newupdatedEmailId = updatedEmail[0]?.id; // Access the returned `id`
+
+    if (!newupdatedEmailId) {
       return NextResponse.json(
         { success: false, error: "Tag not found" },
         { status: 400 },
@@ -95,7 +97,7 @@ export async function PUT(req: NextRequest) {
 
     revalidatePath("/dashboard/messages");
     return NextResponse.json(
-      { success: true, newsLetterFormEntries: updatedEmail[0].insertId },
+      { success: true, newsLetterFormEntries: newupdatedEmailId },
       { status: 200 },
     );
   } catch (error) {

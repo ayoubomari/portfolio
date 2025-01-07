@@ -86,13 +86,15 @@ export async function POST(req: NextRequest) {
         status: data.status,
         isFeatured: data.isFeatured,
       })
-      .execute();
+      .returning({ id: project.id })
+
+    const newProjectId = newProject[0].id; // Access the returned `id`
 
     // add tags
     if (Array.isArray(data.tagsId) && data.tagsId.length > 0) {
       await db.insert(projectTag).values(
         data.tagsId.map((tagId) => ({
-          projectId: newProject[0].insertId,
+          projectId: newProjectId,
           tagId,
         })),
       );
@@ -102,7 +104,7 @@ export async function POST(req: NextRequest) {
     if (Array.isArray(data.technologiesId) && data.technologiesId.length > 0) {
       await db.insert(projectTechnology).values(
         data.technologiesId.map((technologyId) => ({
-          projectId: newProject[0].insertId,
+          projectId: newProjectId,
           technologyId,
         })),
       );

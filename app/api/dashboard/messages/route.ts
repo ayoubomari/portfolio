@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
         subject,
         message,
       })
-      .execute();
+      .returning({ id: contactFormEntries.id })
 
     revalidatePath("/dashboard/messages");
     return NextResponse.json(
@@ -81,9 +81,11 @@ export async function PUT(req: NextRequest) {
         updatedAt: new Date(),
       })
       .where(eq(contactFormEntries.id, id))
-      .execute();
+      .returning({ id: contactFormEntries.id })
 
-    if (!updatedMessage[0].affectedRows) {
+    const updatedContactFormEntriesId = updatedMessage[0]?.id; // Access the returned `id`
+
+    if (!updatedContactFormEntriesId) {
       return NextResponse.json(
         { success: false, error: "Tag not found" },
         { status: 400 },
@@ -92,7 +94,7 @@ export async function PUT(req: NextRequest) {
 
     revalidatePath("/dashboard/messages");
     return NextResponse.json(
-      { success: true, contactFormEntries: updatedMessage[0].insertId },
+      { success: true, contactFormEntries: updatedContactFormEntriesId },
       { status: 200 },
     );
   } catch (error) {

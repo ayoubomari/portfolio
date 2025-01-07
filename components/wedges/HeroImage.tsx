@@ -13,7 +13,7 @@ export default function HeroImage() {
               width={260}
               height={260}
               priority={true}
-              src="/assets/images/people/avatar1_3.png"
+              src="/assets/images/people/avatar1_1.jpg"
               alt="Ayoub Omari Software Engineer"
               className="h-full w-full object-cover"
             />

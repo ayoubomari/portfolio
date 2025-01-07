@@ -215,7 +215,7 @@ export default function Home() {
                 summary="A desktop GUI game of checkers where players can play against each other or against the computer."
                 technologies={["JAVA", "AWT", "Swing"]}
                 githubLink="https://www.github.com/ayoubomari/dame"
-                websiteLink="https://www.google.com/"
+                // websiteLink="https://www.google.com/"
               />
             </div>
             <Link href="/projects" className="mt-10 flex justify-center">

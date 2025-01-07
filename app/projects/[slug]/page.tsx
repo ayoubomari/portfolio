@@ -158,7 +158,7 @@ export async function generateMetadata({
       ],
       locale: "en_US",
       type: "article",
-      publishedTime: project.startDate?.toISOString(),
+      publishedTime: project.startDate || undefined,
       authors: ["Ayoub Omari"],
     },
     twitter: {
@@ -217,8 +217,8 @@ export default async function ProjectPage({ params }: { params: ProjectParams })
             `${env.NEXT_PUBLIC_SITE_URL}/uploads/projects-thumbnails/${project.thumbnail}` ||
             `${env.NEXT_PUBLIC_SITE_URL}/assets/images/contents/thumbnail1.webp`
           ],
-          datePublished: project.startDate?.toISOString(),
-          dateModified: project.startDate?.toISOString(),
+          datePublished: project.startDate || undefined,
+          dateModified: project.startDate || undefined,
           author: [{
             "@type": "Person",
             name: "Ayoub Omari",

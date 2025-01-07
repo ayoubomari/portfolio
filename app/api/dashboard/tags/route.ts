@@ -66,9 +66,11 @@ export async function PUT(req: NextRequest) {
       .update(tag)
       .set({ value })
       .where(eq(tag.id, id))
-      .execute();
+      .returning({ id: tag.id })
 
-    if (!updatedTag[0].affectedRows) {
+    const newupdatedTagId = updatedTag[0]?.id; // Access the returned `id`
+
+    if (!newupdatedTagId) {
       return NextResponse.json(
         { success: false, error: "Tag not found" },
         { status: 400 },
@@ -77,7 +79,7 @@ export async function PUT(req: NextRequest) {
 
     revalidatePath("/dashboard/tags");
     return NextResponse.json(
-      { success: true, tag: updatedTag[0].insertId },
+      { success: true, tag: newupdatedTagId },
       { status: 200 },
     );
   } catch (error) {

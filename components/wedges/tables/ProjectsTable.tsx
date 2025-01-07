@@ -170,10 +170,10 @@ export default function ProjectTable({ projects }: ProjectTableProps) {
                   )}
                 </TableCell>
                 <TableCell>
-                  {project.startDate?.toLocaleDateString() || "N/A"}
+                  {project.startDate || "N/A"}
                 </TableCell>
                 <TableCell>
-                  {project.endDate?.toLocaleDateString() || "N/A"}
+                  {project.endDate || "N/A"}
                 </TableCell>
                 <TableCell className="text-right">
                   <DropdownMenu>

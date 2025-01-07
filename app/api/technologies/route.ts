@@ -5,10 +5,9 @@ import { desc } from "drizzle-orm";
 
 export async function GET(): Promise<Response> {
   try {
-    const technologies = await db
-      .select()
-      .from(technology)
-      .orderBy(desc(technology.id));
+    const technologies = await db.select().from(technology).orderBy(desc(technology.id));
+
+    console.log("technologies", technologies);
 
     return NextResponse.json(technologies);
   } catch (error) {

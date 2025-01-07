@@ -106,9 +106,11 @@ export async function POST(req: NextRequest) {
             alt: image.name.split(".")[0] || image.name,
             projectId: Number(data.projectId),
           })
-          .execute();
+          .returning({ id: projectImage.id })
 
-        return newImage[0].insertId;
+        const newImageId = newImage[0].id; // Access the returned `id`
+
+        return newImageId;
       }),
     );
 

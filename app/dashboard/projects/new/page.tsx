@@ -48,6 +48,7 @@ const fetchTechnologies = async (): Promise<Technology[]> => {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL!}/technologies`,
   );
+  console.log("response", response);
   return response.json();
 };
 

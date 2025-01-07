@@ -162,7 +162,7 @@ export default function BlogPostTable({ blogPosts }: BlogPostTableProps) {
                     {post.status}
                   </Badge>
                 </TableCell>
-                <TableCell>{post.date.toLocaleDateString()}</TableCell>
+                <TableCell>{post.date}</TableCell>
                 <TableCell className="text-right">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>

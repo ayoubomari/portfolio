@@ -51,13 +51,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Project routes
   const projectRoutes = projectSlugs.map((project) => ({
     url: `${baseUrl}/projects/${project.slug}`,
-    lastModified: project.startDate?.toISOString() || new Date().toISOString(),
+    lastModified: project.startDate || new Date().toISOString(),
   }));
 
   // Blog post routes
   const blogRoutes = blogPostSlugs.map((blog) => ({
     url: `${baseUrl}/blog/${blog.slug}`,
-    lastModified: blog.date?.toISOString() || new Date().toISOString(),
+    lastModified: blog.date || new Date().toISOString(),
   }));
 
   return [...routes, ...projectRoutes, ...blogRoutes];
