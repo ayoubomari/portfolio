@@ -1,4 +1,4 @@
-# Modern Portfolio & Blog Platform
+# Modern Portfolio With Blog And Projects Showcase
 
 <div align="center">
   <img src="preview/homepage.png" alt="Portfolio Homepage" width="100%">
