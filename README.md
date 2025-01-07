@@ -1,5 +1,7 @@
 # Modern Portfolio With Blog And Projects Showcase
 
+🌐 [Live Demo](https://www.ayoubomari.com)
+
 <div align="center">
   <img src="preview/homepage.png" alt="Portfolio Homepage" width="100%">
 </div>
