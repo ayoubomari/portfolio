@@ -137,6 +137,15 @@ npm run lint         # Run ESLint
 | `SMTP_PASSWORD` | SMTP password |
 | `RECEIVER_EMAIL` | Contact form recipient email |
 
+## 🗄️ Database Setup
+
+Initialize your database schema and run migrations:
+
+```bash
+npm run generate  # Generate database migrations
+npm run push     # Push migrations to database
+```
+
 ## 👤 Admin Setup
 
 After setting up your environment variables and database, run the following command to create an admin user:
