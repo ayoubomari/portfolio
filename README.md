@@ -135,6 +135,14 @@ npm run lint         # Run ESLint
 | `SMTP_PASSWORD` | SMTP password |
 | `RECEIVER_EMAIL` | Contact form recipient email |
 
+## 👤 Admin Setup
+
+After setting up your environment variables and database, run the following command to create an admin user:
+
+```bash
+node scripts/initialisedb.js
+```
+
 ## 🚀 Deployment
 
 1. Build the application:
