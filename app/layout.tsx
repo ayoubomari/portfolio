@@ -15,7 +15,7 @@ const fontSans = FontSans({
 export const metadata: Metadata = {
   title: "Ayoub Omari - Full Stack Web3 Developer",
   description:
-    "Explore Ayoub Omari's portfolio showcasing expertise in full-stack development, Web3, blockchain, and e-commerce solutions.",
+    "Full Stack Developer specializing in Go, TypeScript, and Blockchain development. Experienced in building scalable web applications, smart contracts, and distributed systems using modern technologies like React, Next.js, and Algorand.",
   keywords: [
     "Full Stack Developer",
     "Web3",

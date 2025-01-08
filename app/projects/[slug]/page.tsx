@@ -263,7 +263,7 @@ export default async function ProjectPage({ params }: { params: ProjectParams })
             >
               <div className="flex items-center">
                 <FontAwesomeIcon className="mr-2 w-4 h-4" icon={faCalendarDays} />
-                <span>{project.startDate ? new Date(project.startDate).toLocaleDateString() : " " } - {project.endDate ? new Date(project.endDate).toLocaleDateString() : 'Present'}</span>
+                <span>{(project.startDate && project.startDate != "1970-01-01") ? new Date(project.startDate).toLocaleDateString() : " " } - {(project.endDate && project.endDate != "1970-01-01") ? new Date(project.endDate).toLocaleDateString() : 'Present'}</span>
               </div>
               {project.githubLink && (
                 <a href={project.githubLink} target="_blank" rel="noopener noreferrer" className="flex items-center">
