@@ -162,7 +162,7 @@ export default function BlogPostTable({ blogPosts }: BlogPostTableProps) {
                     {post.status}
                   </Badge>
                 </TableCell>
-                <TableCell>{post.date}</TableCell>
+                <TableCell>{(post.date && post.date !== "1970-01-01") ? post.date : "N/A"}</TableCell>
                 <TableCell className="text-right">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>

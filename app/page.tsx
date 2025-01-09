@@ -209,13 +209,13 @@ export default function Home() {
                 websiteLink="https://www.facebook.com/pacshare1"
               />
               <ProjectCard2
-                thumbnail="checkers_thumb.webp"
-                slug="dame"
-                title="Dame Game"
-                summary="A desktop GUI game of checkers where players can play against each other or against the computer."
-                technologies={["JAVA", "AWT", "Swing"]}
-                githubLink="https://www.github.com/ayoubomari/dame"
-                // websiteLink="https://www.google.com/"
+                thumbnail="invoix_thumb.webp"
+                slug="invoix"
+                title="Invoix"
+                summary="A invoice trading platform powered by the Algorand blockchain, where users can trade their invoices."
+                technologies={["Tokenization", "Algorand", "MVP"]}
+                // githubLink="https://www.github.com/ayoubomari/dame"
+                websiteLink="https://www.toknar.io/"
               />
             </div>
             <Link href="/projects" className="mt-10 flex justify-center">

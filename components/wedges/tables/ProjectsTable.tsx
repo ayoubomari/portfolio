@@ -170,10 +170,10 @@ export default function ProjectTable({ projects }: ProjectTableProps) {
                   )}
                 </TableCell>
                 <TableCell>
-                  {project.startDate || "N/A"}
+                  {(project.startDate && project.startDate !== "1970-01-01") ? project.startDate : "N/A"}
                 </TableCell>
                 <TableCell>
-                  {project.endDate || "N/A"}
+                  {(project.endDate && project.endDate !== "1970-01-01") ? project.endDate : "N/A"}
                 </TableCell>
                 <TableCell className="text-right">
                   <DropdownMenu>

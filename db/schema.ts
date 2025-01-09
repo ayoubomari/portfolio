@@ -141,8 +141,8 @@ export const project = pgTable("project", {
   startDate: date("start_date"),
   endDate: date("end_date"),
   summary: varchar("summary", { length: 255 }).notNull(),
-  githubLink: varchar("github_link", { length: 255 }),
-  websiteLink: varchar("website_link", { length: 255 }),
+  githubLink: varchar("github_link", { length: 255 }).default(""),
+  websiteLink: varchar("website_link", { length: 255 }).default(""),
   status: statusEnum("status").notNull(),
   isFeatured: boolean("is_featured").notNull(),
   createdAt: timestamp("created_at")

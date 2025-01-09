@@ -62,7 +62,8 @@ async function fetchBlogPostBySlugWithRelevantPosts(slug: string): Promise<
     const relevantPosts = await db.query.blogPost.findMany({
       where: and(
         not(eq(blogPost.slug, slug)),
-        lte(blogPost.date, mainPost.date)
+        lte(blogPost.date, mainPost.date),
+        eq(blogPost.status, "visible"),
       ),
       orderBy: [desc(blogPost.date)],
       limit: 3,

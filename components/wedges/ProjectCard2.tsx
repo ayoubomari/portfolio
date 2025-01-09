@@ -31,7 +31,7 @@ export default function ProjectCard2({
   websiteLink?: string | null;
 }) {
   return (
-    <Card className="relative rounded-xl">
+    <Card className="relative rounded-xl min-h-full">
       <Link href={`/projects/${slug}`}>
         <div className="rounded-xl px-5 pt-5">
           <img

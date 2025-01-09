@@ -14,8 +14,13 @@ async function getAllProjectSlugs(): Promise<
       startDate: project.startDate,
     })
     .from(project)
-    .where(eq(project.status, "visible"));
-  return projects;
+    // .where(eq(project.status, "visible"));
+
+  // Convert the startDate property to a Date object
+  return projects.map((project) => ({
+    slug: project.slug,
+    startDate: project.startDate ? new Date(project.startDate) : null,
+  }));
 }
 
 // Fetch all blog post slugs and dates from the database
@@ -28,8 +33,13 @@ async function getAllBlogPostSlugs(): Promise<
       date: blogPost.date,
     })
     .from(blogPost)
-    .where(eq(blogPost.status, "visible"));
-  return blogPosts;
+    // .where(eq(blogPost.status, "visible"));
+
+  // Convert the date property to a Date object
+  return blogPosts.map((post) => ({
+    slug: post.slug,
+    date: post.date ? new Date(post.date) : null,
+  }));
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

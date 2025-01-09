@@ -30,7 +30,7 @@
   <img src="preview/dashboard1.png" alt="Admin Dashboard" width="45%" style="margin-right: 2%">
   <img src="preview/dashboard1-dark.png" alt="Admin Dashboard" width="45%" style="margin-left: 2%">
   <br><br>
-  <img src="preview/contact.png" alt="Contact Page" width="45%">
+  <img src="preview/contact.png" alt="Contact Page" width="100%">
 </div>
 
 ## 🚀 Tech Stack

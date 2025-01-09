@@ -87,7 +87,8 @@ async function fetchProjectBySlugWithRelevantProjects(slug: string): Promise<
     const relevantProjectsWithTechnologies = await db.query.project.findMany({
       where: and(
         not(eq(project.slug, slug)),
-        lte(project.createdAt, mainProject.createdAt)
+        lte(project.createdAt, mainProject.createdAt),
+        eq(project.status, "visible"),
       ),
       orderBy: [desc(project.endDate)],
       limit: 3,

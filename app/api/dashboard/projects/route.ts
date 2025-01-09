@@ -82,7 +82,7 @@ export async function POST(req: NextRequest) {
         endDate: data.endDate ? new Date(data.endDate) : null,
         summary: data.summary,
         githubLink: data.githubLink || null,
-        websiteLink: data.githubLink || null,
+        websiteLink: data.websiteLink || null,
         status: data.status,
         isFeatured: data.isFeatured,
       })
@@ -239,7 +239,7 @@ export async function PUT(req: NextRequest) {
         endDate: data.endDate ? new Date(data.endDate) : null,
         summary: data.summary,
         githubLink: data.githubLink || null,
-        websiteLink: data.githubLink || null,
+        websiteLink: data.websiteLink || null,
         status: data.status,
         isFeatured: data.isFeatured,
         updatedAt: new Date(),

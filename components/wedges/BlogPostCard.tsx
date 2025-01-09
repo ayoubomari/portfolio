@@ -16,7 +16,7 @@ export default function BlogPostCard({
   date: string;
 }) {
   return (
-    <Card className="overflow-hidden border-primary">
+    <Card className="overflow-hidden border-primary min-h-full">
       <Link href={`/blog/${slug}`}>
         <img
           src={

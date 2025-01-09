@@ -64,8 +64,6 @@ async function getCountAndPercentageChange(
 
   const prevCount = Number(lastMonthCount[0].count);
   const count = Number(currentMonthCount[0].count);
-  console.log("prevCount", prevCount, typeof prevCount);
-  console.log("count", count, typeof count);
   const percentageChange =
     prevCount !== 0 ? ((count - prevCount) / prevCount) * 100 : 0;
 
@@ -171,7 +169,7 @@ async function getAllTop5Counts() {
         acc.push({
           id: curr.id,
           name: tagResult?.name.replace(/[+\-.,'" 0-9]/g, "-") || "Unknown",
-          count: curr.count,
+          count: Number(curr.count),
           fill: `var(--color-${tagResult?.name.replace(/[+\-.,'" 0-9]/g, "-")})`,
         });
       }
@@ -204,7 +202,7 @@ async function getAllTop5Counts() {
         acc.push({
           id: curr.id,
           name: techResult?.name.replace(/[+\-.,'" 0-9]/g, "-") || "Unknown",
-          count: curr.count,
+          count: Number(curr.count),
           fill: `var(--color-${techResult?.name.replace(/[+\-.,'" 0-9]/g, "-")})`,
         });
       }
@@ -306,7 +304,7 @@ export default async function Page() {
           allMonthlyCounts,
         )}
         {rederDonutChart(
-          "Technology",
+          "Technologies",
           "Top Technologies used",
           topTechnologies,
         )}
