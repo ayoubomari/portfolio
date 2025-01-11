@@ -276,7 +276,9 @@ export default function Page({ params }: { params: PageParams }) {
                 <Input
                   id="slug"
                   value={slug}
-                  onChange={(e) => setSlug(e.target.value)}
+                  onChange={(e) =>
+                    setSlug(e.target.value.toLowerCase().replace(/\s/g, "-"))
+                  }
                   placeholder="Enter slug"
                   required
                 />
