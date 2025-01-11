@@ -161,6 +161,8 @@ export default async function BlogPostPage({ params }: { params: BlogParams }) {
   );
   const fileContent = await fs.promises.readFile(filePath, "utf8");
 
+  console.log("blogPost.date.toString():", blogPost.date.toString());
+
   return (
     <>
       {/* JSON-LD */}
@@ -222,7 +224,7 @@ export default async function BlogPostPage({ params }: { params: BlogParams }) {
                 </span>
                 <span className="text-lg font-bold">The Dig</span>
                 <span className="hidden font-medium sm:block">
-                  {fromFullStringDateTo_DD_month_YYYY(blogPost.date.toString())}
+                  {blogPost.date.toString().replace(/-/g, " ")}
                 </span>
               </div>
               <h1 className="py-6 text-2xl font-bold sm:py-8 sm:text-center md:py-12 md:text-3xl lg:text-4xl">
@@ -242,7 +244,7 @@ export default async function BlogPostPage({ params }: { params: BlogParams }) {
                   {blogPost.author}
                 </span>
                 <span className="block font-medium sm:hidden">
-                  {fromFullStringDateTo_DD_month_YYYY(blogPost.date.toString())}
+                  {blogPost.date.toString().replace(/-/g, " ")}
                 </span>
               </div>
             </div>
