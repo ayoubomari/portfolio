@@ -114,7 +114,7 @@ export async function generateMetadata({
       ],
       locale: "en_US",
       type: "article",
-      publishedTime: blogPost.date.toISOString(),
+      publishedTime: blogPost.date,
       authors: [blogPost.author],
     },
     twitter: {
@@ -173,8 +173,8 @@ export default async function BlogPostPage({ params }: { params: BlogParams }) {
             `${env.NEXT_PUBLIC_SITE_URL}/uploads/blog-posts-thumbnails/${blogPost.thumbnail}` ||
             `${env.NEXT_PUBLIC_SITE_URL}/assets/images/contents/thumbnail1.webp`
           ],
-          datePublished: blogPost.date.toISOString(),
-          dateModified: blogPost.date.toISOString(),
+          datePublished: blogPost.date,
+          dateModified: blogPost.date,
           author: [{
             "@type": "Person",
             name: blogPost.author,
@@ -261,7 +261,7 @@ export default async function BlogPostPage({ params }: { params: BlogParams }) {
             <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
               {/* relevant blog posts  Cards */}
               {relevantPosts.map((post, i) => (
-                <BlogPostCard key={i} {...post} date={formatDateToSQL(post.date)} />
+                <BlogPostCard key={i} {...post} date={formatDateToSQL(new Date(post.date))} />
               ))}
             </div>
           </div>
