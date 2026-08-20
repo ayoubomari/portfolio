@@ -64,7 +64,7 @@ export default function Home() {
               Web3 & Full-Stack Developer | Crafting the Future 🚀
               </p>
               <h1 className="mb-6 text-lg md:text-xl">
-              Bringing blockchain solutions and DeFi innovations to life with cutting-edge technologies. Let's collaborate! 🌟
+              Specializing in decentralized applications, smart contract development, and scalable web architecture. 🌟
               </h1>
               <div className="flex flex-wrap gap-4">
                 <Link
@@ -191,6 +191,15 @@ export default function Home() {
                 websiteLink="https://www.lahagni.com/"
               />
               <ProjectCard2
+                thumbnail="ruxaby_astro.webp"
+                slug="ruxaby-p2p-marketplace"
+                title="Ruxaby P2P Marketplace"
+                summary="A decentralized Algorand marketplace where users trade goods, secured by a trustless dual-model escrow system."
+                technologies={["E-commerce", "Algokit", "peer-to-peer"]}
+                // githubLink="https://www.github.com/ayoubomari"
+                websiteLink="https://ruxaby.com/"
+              />
+              <ProjectCard2
                 thumbnail="arbitrage_thumb.webp"
                 slug="algorand-arbitrage-bot"
                 title="Algorand Arbitrage Bot"
@@ -199,7 +208,7 @@ export default function Home() {
                 // githubLink="https://www.github.com/ayoubomari"
                 websiteLink="https://allo.info/account/IMY4T476PRNOSCNNHDBLEOIEU3HOE6FM3VY6RFEJ7CQKWWOPZBATTXRXJM"
               />
-              <ProjectCard2
+              {/* <ProjectCard2
                 thumbnail="pacshare_thumb.webp"
                 slug="pacshare-chat-bot"
                 title="PacShare Chat Bot"
@@ -207,7 +216,7 @@ export default function Home() {
                 technologies={["Golang", "Web-Scraping", "Chatbot"]}
                 githubLink="https://github.com/ayoubomari/pacshare"
                 websiteLink="https://www.facebook.com/pacshare1"
-              />
+              /> */}
               <ProjectCard2
                 thumbnail="invoix_thumb.webp"
                 slug="invoix"

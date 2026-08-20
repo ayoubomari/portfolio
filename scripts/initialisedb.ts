@@ -79,10 +79,9 @@ async function initializeAdmin() {
       avatar || null, // Optional avatar
     ];
 
-    console.log("passwordHash", passwordHash);
-    // const result = await pool.query(query, values);
+    const result = await pool.query(query, values);
 
-    // console.log("Admin initialized successfully:", result.rows[0]);
+    console.log("Admin initialized successfully:", result.rows[0]);
   } catch (error) {
     console.error("Error initializing admin:", error);
   } finally {
