@@ -33,9 +33,9 @@ Lahagni addresses the transportation challenges in Southern Morocco by providing
 
 ### 1. Passengers (Mobile App)
 
-![Full service](/web/20250122200717im_/https://ayoubomari.com/uploads/projects-images/1736541505192-Full%20service.webp)
-![Looking for drivers](/web/20250122200717im_/https://ayoubomari.com/uploads/projects-images/1736541959879-Looking%20for%20drivers.webp)
-![chat](/web/20250122200717im_/https://ayoubomari.com/uploads/projects-images/1736541505192-chat.webp)
+![Full service](/uploads/projects-images/1736541505192-Full%20service.webp)
+![Looking for drivers](/uploads/projects-images/1736541959879-Looking%20for%20drivers.webp)
+![chat](/uploads/projects-images/1736541505192-chat.webp)
 
 - Ride booking interface
 - Real-time tracking
@@ -45,7 +45,7 @@ Lahagni addresses the transportation challenges in Southern Morocco by providing
 
 ### 2. Drivers (Mobile App)
 
-![Wallet](/web/20250122200717im_/https://ayoubomari.com/uploads/projects-images/1736541700633-Wallet.webp)
+![Wallet](/uploads/projects-images/1736541700633-Wallet.webp)
 
 - Ride request management
 - Earnings dashboard
