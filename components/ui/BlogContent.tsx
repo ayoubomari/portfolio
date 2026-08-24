@@ -17,7 +17,7 @@ interface BlogPostProps {
 
 export default function BlogContent({ content }: BlogPostProps) {
   return (
-    <article className="prose prose-lg max-w-none dark:prose-invert">
+    <article className="prose prose-lg max-w-none dark:prose-invert [&_img]:max-w-[500px]">
       <ReactMarkdown
         remarkPlugins={[remarkParse, remarkGfm, remarkRehype]}
         rehypePlugins={[rehypeRaw, rehypePrismPlus]}
